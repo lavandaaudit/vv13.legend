@@ -72,13 +72,13 @@
     border: 2px dashed rgba(200,200,210,.16);
   }
   #touchBtns {
-    position: absolute; right: 10px; bottom: 10px;
-    display: grid; grid-template-columns: repeat(3, auto); gap: 8px;
+    position: absolute; right: 7px; bottom: 7px;
+    display: grid; grid-template-columns: repeat(3, auto); gap: 5px;
   }
   .tbtn {
-    pointer-events: auto; min-width: 66px; height: 46px; padding: 0 10px; border-radius: 10px;
-    background: rgba(18,20,26,.55); border: 1px solid rgba(190,195,205,.35);
-    color: #cfc8b8; font-family: monospace; font-size: 12px; letter-spacing: .06em;
+    pointer-events: auto; min-width: 46px; height: 34px; padding: 0 7px; border-radius: 7px;
+    background: rgba(14,16,20,.38); border: 1px solid rgba(190,195,205,.22);
+    color: #c9c2b2; font-family: monospace; font-size: 10px; letter-spacing: .05em;
     touch-action: manipulation; -webkit-user-select: none; user-select: none;
     display: flex; align-items: center; justify-content: center;
   }
@@ -3822,10 +3822,10 @@ const IS_TOUCH = URLP.has('touch') ? URLP.get('touch') === '1'
   : (navigator.maxTouchPoints || 0) > 0 || matchMedia('(pointer: coarse)').matches;
 
 /* ---------- РЕНДЕР / СЦЕНА ---------- */
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio || 1, IS_TOUCH ? 1.25 : 1.5));
+const renderer = new THREE.WebGLRenderer({ antialias: !IS_TOUCH });
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, IS_TOUCH ? 0.9 : 1.5));
 renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = !IS_TOUCH;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -3834,7 +3834,7 @@ document.getElementById('app').appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x03040a);
-scene.fog = new THREE.FogExp2(0x04050b, URLP.get('view') === 'plan' ? 0.008 : 0.05);
+scene.fog = new THREE.FogExp2(0x04050b, URLP.get('view') === 'plan' ? 0.008 : (IS_TOUCH ? 0.095 : 0.05));
 
 const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.08, 80);
 
@@ -4716,8 +4716,8 @@ function wcurtain(x, z, ry, w) {
   wcurtain(0.2, 2.4, rad(90), 1.1);
   placeModel('hanging_picture_frame_01', 4.8, 4.67, rad(180), 1.0, null, null, 1.72); // картина на південній стіні (праворуч від стелажа)
   // письмовий (шкільний) стіл з ПК біля вікна
-  placeModel('SchoolDesk_01', 0.55, 2.4, rad(270), 1.0, 0.8, 0.75);
-  const dk = grp(0.55, 2.4, rad(90));
+  placeModel('SchoolDesk_01', 0.8, 2.4, rad(270), 1.0, 0.8, 0.75);
+  const dk = grp(0.8, 2.4, rad(90));
   dk.add(box(0.16, 0.42, 0.44, M_dark, 0.1, 0.21, -0.12)); // системний блок під столом
   dk.add(cyl(0.008, 0.008, 0.02, mat({ color: 0x9fb2c0, emissive: 0x2a4a5c, emissiveIntensity: 0.6 }), 0.1, 0.43, -0.12, 8)); // кнопка живлення
   const mon = new THREE.Group(); mon.position.set(-0.3, 0.85, -0.02); dk.add(mon);
@@ -4762,9 +4762,9 @@ function wcurtain(x, z, ry, w) {
   placeModel('CoffeeTable_01', 12.05, 3.6, 0, 1.1, 0.9, 0.9);
   placeModel('Ottoman_01', 11.85, 2.95, rad(180), 1.0, 0.7, 0.7);
   rug(13.3, 2.9, 2.6, 1.8, '#2e3438');
-  placeModel('SchoolDesk_01', 15.5, 2.9, rad(90), 1.15, 1.2, 0.65);       // шкільний стіл під вікном
-  placeModel('dining_chair_02', 14.75, 2.9, rad(90), 1.0, 0.45, 0.5);
-  placeModel('desk_lamp_arm_01', 15.45, 2.55, rad(140), 0.55, null, null, 0.86);
+  placeModel('SchoolDesk_01', 15.25, 2.9, rad(90), 1.15, 1.2, 0.65);      // шкільний стіл під вікном (0.45 від стіни, без перетину штори)
+  placeModel('dining_chair_02', 14.55, 2.9, rad(90), 1.0, 0.45, 0.5);
+  placeModel('desk_lamp_arm_01', 15.2, 2.55, rad(140), 0.55, null, null, 0.86);
   wcurtain(16.28, 2.9, rad(270), 2.0);
   placeModel('hanging_picture_frame_02', 13.45, 1.15, 0, 1.0, null, null, 1.75); // картина над кушеткою
   placeModel('alarm_clock_01', 14.85, 1.5, rad(25), 1.0, null, null, 0.78);   // будильник на тумбочці (пак decor-art)
@@ -5013,11 +5013,11 @@ function wcurtain(x, z, ry, w) {
 }
 /* ===== ХВИЛЯ 2: К2 — комп, мікроскоп, канцелярія, квест-дріб ===== */
 {
-  placeModel('classic_laptop', 15.5, 2.95, rad(105), 0.8, null, null, 1.015);
-  placeModel('circuit_board', 15.2, 2.7, rad(160), 1.0, null, null, 1.02);
-  placeModel('clipboard', 15.75, 2.65, rad(200), 1.0, null, null, 1.02);
-  placeModel('stationery_supplies', 15.3, 3.1, rad(0), 1.0, null, null, 1.02);
-  placeModel('vintage_stapler', 15.85, 2.75, rad(30), 1.0, null, null, 1.02);
+  placeModel('classic_laptop', 15.25, 2.95, rad(105), 0.8, null, null, 1.015);
+  placeModel('circuit_board', 14.95, 2.7, rad(160), 1.0, null, null, 1.02);
+  placeModel('clipboard', 15.5, 2.65, rad(200), 1.0, null, null, 1.02);
+  placeModel('stationery_supplies', 15.05, 3.1, rad(0), 1.0, null, null, 1.02);
+  placeModel('vintage_stapler', 15.6, 2.75, rad(30), 1.0, null, null, 1.02);
   placeModel('vintage_microscope', 12.25, 3.7, rad(140), 0.9, null, null, 0.58);
   placeModel('seadogs_compass', 11.85, 3.45, rad(20), 1.0, null, null, 0.58);
   placeModel('magnifying_glass_01', 12.3, 3.5, rad(75), 1.0, null, null, 0.58);
@@ -5106,7 +5106,9 @@ function wcurtain(x, z, ry, w) {
   placeModel('hanging_picture_frame_03', 10.5, 9.44, rad(0), 1.0, null, null, 1.7); // К1 — південна стіна, портрет жінки
   placeModel('standing_picture_frame_01', 6.78, 0.5, rad(15), 1.0, null, null, 1.04); // фотокартка на комоді
   placeModel('gothic_statue', 10.15, 5.5, rad(-35), 0.85, 0.9, 0.9, 1.21);          // К2 — готична статуя в куті
-  placeModel('horse_statue_01', 15.78, 3.08, rad(140), 1.0, null, null, 1.02);      // К2 — олов'яний кінь на столі
+  placeModel('horse_statue_01', 15.53, 3.08, rad(140), 1.0, null, null, 1.02);      // К2 — олов'яний кінь на столі
+  placeModel('carved_wooden_elephant', 15.03, 2.72, rad(-60), 0.8, null, null, 1.02); // група статуеток на столі К2 (3 шт)
+  placeModel('ceramic_vase_01', 15.37, 3.18, rad(20), 0.85, null, null, 1.02);      // третя статуетка поруч
   placeModel('bronze_ray_statue', 5.75, 0.5, rad(-25), 1.0, null, null, 1.04);      // зал — знак ВВ-13 на комоді
   placeModel('concrete_cat_statue', 15.45, 10.75, rad(60), 1.0, null, null, 0.72);  // кухня — бетонний кіт
   placeModel('treasure_chest', 8.75, -0.6, rad(15), 1.0, 1.0, 0.8, 0.17);           // кладовка — скриня під ключ
@@ -6317,6 +6319,30 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     g.visible = furnGroup.visible;
     markers.push(g); ev.mark = g;
   });
+  /* ПАПЕРИ ЛЯГАЮТЬ НА ПОВЕРХНІ: промінь униз від предмета — верхня площина
+     меблів (стіл/комод/підвіконня) або підлога. Моделі вантажаться асинхронно,
+     тому снап із ретраями поки всі поверхні не знайдені. */
+  const _snapRC = new THREE.Raycaster();
+  let snapTries = 0;
+  const snapTimer = setInterval(() => {
+    snapTries++;
+    let left = 0;
+    EV.forEach(ev => {
+      if (ev.snapped || !ev.mark) return;
+      try {
+        _snapRC.set(new THREE.Vector3(ev.x * S, 3.2, ev.z * S), new THREE.Vector3(0, -1, 0));
+        _snapRC.far = 3.4;
+        const hits = _snapRC.intersectObjects(furnGroup.children, true);
+        let done = false;
+        for (const h of hits) {
+          if (h.object.parent === ev.mark || h.object === ev.mark) continue;
+          if (h.point.y > 0.14 && h.point.y < 2.4) { ev.y = h.point.y; ev.baseY = h.point.y; ev.mark.position.y = h.point.y + 0.006; done = true; break; }
+        }
+        if (done) ev.snapped = true; else left++;
+      } catch (e) {}
+    });
+    if ((left === 0 && snapTries > 2) || snapTries > 40) clearInterval(snapTimer);
+  }, 900);
 
   /* ---------- Скрімер-силуети ---------- */
   const silM = new THREE.MeshBasicMaterial({ color: 0x050505, side: THREE.DoubleSide });
@@ -6461,6 +6487,9 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
       renderJournal(); jr.style.display = 'flex'; return;
     }
     if (e.code !== 'KeyR') return;
+    // предмет під прицілом — беремо саме його
+    const _re = rayEv();
+    if (_re) { takeEv(_re); return; }
     const q = nearQP();
     if (!q) {
       // без точки QP — спробувати підібрати лежачий доказ (фото/записки)
@@ -6504,29 +6533,53 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   /* ---------- Тик гри: підказки, маркери, події ---------- */
   const promptEl = document.getElementById('prompt');
   let lastEvCheck = 0;
+  /* ПРИЦІЛ: рейкаст з центру екрана — підсвічується ЛИШЕ предмет під курсором */
+  const _aimRC = new THREE.Raycaster(); const _aimV = new THREE.Vector2(0, 0);
+  function rayEv() {
+    try {
+      _aimRC.setFromCamera(_aimV, camera);
+      const ms = []; EV.forEach(e => { if (e.mark && e.mark.visible) ms.push(e.mark); });
+      const hits = _aimRC.intersectObjects(ms, true);
+      if (hits.length && hits[0].distance < 3.2) {
+        const m = hits[0].object.parent;
+        return EV.find(e => e.mark === m) || null;
+      }
+    } catch (e) {}
+    return null;
+  }
+  window.__evRay = rayEv;
   function tick() {
     requestAnimationFrame(tick);
     if (!started || jr.style.display !== 'none') return;
     const now = performance.now();
-    // маркери пульсують
-    const pu = 0.55 + Math.sin(now / 400) * 0.35;
-    markers.forEach(m => { if (m.visible) m.scale.setScalar(0.9 + Math.sin(now / 400 + m.position.x) * 0.06); });
+    // підсвітка: ЛИШЕ предмет під прицілом піднімається і пульсує, інші лежать тихо
+    const re = rayEv();
+    markers.forEach(m => {
+      const ev = EV.find(e => e.mark === m);
+      if (!m.visible || !ev) return;
+      const base = ev.baseY != null ? ev.baseY : ev.y;
+      if (re && re.mark === m) { m.scale.setScalar(1.28 + Math.sin(now / 160) * 0.1); m.position.y = base + 0.035; }
+      else { m.scale.setScalar(1); m.position.y = base + 0.006; }
+    });
     // підказка [R]
     if (now - lastEvCheck > 120) {
       lastEvCheck = now;
-      const q = nearQP();
       let txt = '';
-      if (q) {
-        if (q.act === 'doc')  txt = '[R] ' + q.label;
-        if (q.act === 'mirror') txt = (mirrorDone ? '' : '[R] ' + q.label);
-        if (q.act === 'tape') txt = '[R] ' + (tapeDone ? 'Телевізор (статика)' : q.label);
-        if (q.act === 'fuse') txt = '[R] ' + (fuseDone ? 'Щиток (порожньо)' : q.label);
-        if (q.act === 'exit') txt = hasKey ? '[R] Відчини вхідні двері' : 'Вхідні двері — потрібен ключ-картка 08';
-        if (!txt && window.__survPrompt) txt = window.__survPrompt(q);   // точки виживання
-      } else {
-        // підказки збирання доказів — без точок QP (фото/записки лежать не в тих місцях)
-        const ev = EV.find(e => e.mark && e.mark.visible && Math.hypot(P.x - e.x * S, P.z - e.z * S) < e.r);
-        if (ev) txt = '[R] Взяти: ' + ev.name;
+      if (re) txt = '[R] Взяти: ' + re.name;                     // предмет під прицілом — найвищий пріоритет
+      if (!txt) {
+        const q = nearQP();
+        if (q) {
+          if (q.act === 'doc')  txt = '[R] ' + q.label;
+          if (q.act === 'mirror') txt = (mirrorDone ? '' : '[R] ' + q.label);
+          if (q.act === 'tape') txt = '[R] ' + (tapeDone ? 'Телевізор (статика)' : q.label);
+          if (q.act === 'fuse') txt = '[R] ' + (fuseDone ? 'Щиток (порожньо)' : q.label);
+          if (q.act === 'exit') txt = hasKey ? '[R] Відчини вхідні двері' : 'Вхідні двері — потрібен ключ-картка 08';
+          if (!txt && window.__survPrompt) txt = window.__survPrompt(q);   // точки виживання
+        } else {
+          // підказки збирання доказів — без точок QP (фото/записки лежать не в тих місцях)
+          const ev = EV.find(e => e.mark && e.mark.visible && Math.hypot(P.x - e.x * S, P.z - e.z * S) < e.r);
+          if (ev) txt = '[R] Взяти: ' + ev.name;
+        }
       }
       promptEl.textContent = txt;
       const bq = document.getElementById('bQ');           // мобільна кнопка R світиться, коли є взаємодія
@@ -6895,6 +6948,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     examOn = false; examBox.style.display = 'none';
     camera.fov = camera.__fov0 || 70; camera.updateProjectionMatrix();
   }
+  window.__examOff = examOff;
   function examOnFn(e) {
     examOn = true;
     if (!camera.__fov0) camera.__fov0 = camera.fov;
@@ -8430,6 +8484,36 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 
   /* хук для акторів act23: exposed state */
   window.__act23State = () => ({ step2: window.__act23Step2 ? window.__act23Step2() : 0, step3: window.__act23Step3 ? window.__act23Step3() : 0 });
+})();
+
+
+/* ---------- ✕ ЗАКРИТИ на всіх вікнах (рюкзак / огляд / щоденник / система) ---------- */
+(function() {
+  const st = 'position:absolute;top:10px;right:12px;z-index:9;background:rgba(163,44,34,.5);border:1px solid #d8a03c;color:#ffd98a;font:bold 11px monospace;letter-spacing:.14em;padding:8px 14px;border-radius:8px;cursor:pointer;-webkit-user-select:none;user-select:none;';
+  function bindX(b, fn) {
+    b.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); fn(); }, { passive: false });
+    b.addEventListener('click', e => { e.stopPropagation(); fn(); });
+  }
+  function addX(box, fn) {
+    if (!box || box.__xBtn) return;
+    box.__xBtn = 1;
+    if (getComputedStyle(box).position === 'static') box.style.position = 'relative';
+    const b = document.createElement('div');
+    b.textContent = '\u2715 ЗАКРИТИ'; b.style.cssText = st;
+    bindX(b, fn); box.appendChild(b);
+  }
+  const key = c => () => window.dispatchEvent(new KeyboardEvent('keydown', { code: c }));
+  function arm() {
+    const bp = document.querySelector('#survBp .box') || document.getElementById('survBp');
+    if (bp) addX(bp, key('KeyB'));                       // рюкзак
+    if (window.__examOff) { const ex = document.getElementById('survExam'); if (ex) addX(ex, () => window.__examOff()); }  // огляд предмета
+    const jr = document.getElementById('journal');
+    if (jr) addX(jr, key('KeyJ'));                       // щоденник
+    document.querySelectorAll('div').forEach(d => {      // панель систем
+      if (d.style && d.style.zIndex === '88') addX(d, key('Escape'));
+    });
+  }
+  setTimeout(arm, 400); setTimeout(arm, 1500); setTimeout(arm, 4000);   // панель/огляд створюються динамічно
 })();
 
 </script>

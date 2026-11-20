@@ -1,0 +1,68 @@
+{
+ "amb_dark": {
+  "id": 255715,
+  "license": "CC-BY",
+  "title": "Freesound - horror ambience 78 130322_00.wav by klankbeeld",
+  "kb": 1407
+ },
+ "amb_whisper": {
+  "id": 367197,
+  "license": "CC-BY",
+  "title": "Freesound - horror echo voices 160925_0978.wav by klankbeeld",
+  "kb": 1055
+ },
+ "amb_hell": {
+  "id": 400635,
+  "license": "CC-BY",
+  "title": "Freesound - hell background 170817.wav by klankbeeld",
+  "kb": 1055
+ },
+ "thunder": {
+  "id": 278977,
+  "license": "CC-BY",
+  "title": "Freesound - summer balcony city thunder 150702_00.ogg by klankbeeld",
+  "kb": 294
+ },
+ "rain_loop": {
+  "id": 496201,
+  "license": "?",
+  "title": "Freesound - freesounboca20191206.mp3 by sftmrtn",
+  "kb": 1173
+ },
+ "door_creak": {
+  "id": 797289,
+  "license": "CC-BY",
+  "title": "Freesound - portal swing 1134 AM 231022_0626 by klankbeeld",
+  "kb": 68
+ },
+ "door_slam": {
+  "id": 411107,
+  "license": "CC-BY",
+  "title": "Freesound - thin metal sliding door close slam by kernschall",
+  "kb": 101
+ },
+ "steps_wood": {
+  "id": 108019,
+  "license": "?",
+  "title": "Freesound - Footsteps on Wood floor 1.wav by ErocShadow",
+  "kb": 161
+ },
+ "flash_click": {
+  "id": 441349,
+  "license": "CC0",
+  "title": "Freesound - Plastic Clicking and Rattling by Creature SH",
+  "kb": 376
+ },
+ "heartbeat": {
+  "id": 660622,
+  "license": "?",
+  "title": "Freesound - loopable excerpt of DaveJf&#x27;s Freesound #660539.flac by Timbre",
+  "kb": 453
+ },
+ "hum_electric": {
+  "id": 845520,
+  "license": "CC-BY",
+  "title": "Freesound - custom_electrical_lance_charging_loop_02162026 by Artninja",
+  "kb": 631
+ }
+}

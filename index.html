@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>VV13.ROOM15 — ПОВНА ГРА: Акти I-III | PS1-Style Horror</title>
+<style>
+  :root { --amber:#ff9d3c; --blood:#b0402f; --paper:#cfc2a6; --dim:#8a7f68; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { background:#050505; color:var(--paper); font-family:"Courier New", monospace; }
+  body { min-height:100vh; overflow-x:hidden; }
+  .scan { position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.25) 0 2px, transparent 2px 4px); }
+  .vig { position:fixed; inset:0; pointer-events:none; z-index:49;
+    background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.75) 100%); }
+  header { text-align:center; padding:clamp(40px, 8vw, 90px) 16px 10px; position:relative; }
+  h1 { font-size:clamp(2rem, 8vw, 4.2rem); letter-spacing:.08em; color:#d8d2c2; font-weight:bold; }
+  h1 b { color:var(--blood); }
+  .slogan { color:var(--dim); letter-spacing:.35em; font-size:clamp(.6rem, 1.8vw, .85rem); margin-top:10px; }
+  .part { color:var(--amber); letter-spacing:.28em; font-size:clamp(.75rem, 2.4vw, 1rem); margin-top:22px;
+    animation:blink 1.8s infinite; }
+  @keyframes blink { 0%,100% {opacity:1} 50% {opacity:.35} }
+  main { max-width:860px; margin:0 auto; padding:0 clamp(14px, 4vw, 24px) 80px; }
+  .story { background:rgba(12,10,7,.8); border:1px solid #3a3021; padding:clamp(16px, 3vw, 28px);
+    font-size:clamp(.82rem, 2.6vw, .95rem); line-height:1.75; margin-top:30px; }
+  .story b { color:var(--amber); }
+  .story p + p { margin-top:12px; }
+  h2 { color:var(--amber); letter-spacing:.22em; font-size:clamp(.95rem, 3vw, 1.1rem);
+    margin:44px 0 14px; border-bottom:1px dashed #3a3021; padding-bottom:8px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:12px; }
+  .card { border:1px solid #2e2718; padding:14px 16px; background:rgba(10,8,6,.6); font-size:.82rem; line-height:1.6; }
+  .card b { color:#e8d9b8; display:block; margin-bottom:5px; letter-spacing:.1em; }
+  table { width:100%; border-collapse:collapse; font-size:clamp(.75rem, 2.4vw, .85rem); }
+  td { border-top:1px dashed #2e2718; padding:8px 6px; vertical-align:top; }
+  td.k { color:var(--amber); white-space:nowrap; width:1%; letter-spacing:.08em; }
+  .playwrap { text-align:center; margin-top:40px; }
+  .playbtn { display:inline-block; border:1px solid #57431f; color:var(--paper); cursor:pointer;
+    background:rgba(20,14,8,.6); padding:clamp(14px, 3vw, 20px) clamp(34px, 8vw, 64px);
+    font:bold clamp(.9rem, 3vw, 1.15rem) "Courier New", monospace; letter-spacing:.3em; transition:all .2s; }
+  .playbtn:hover { color:var(--amber); border-color:var(--amber); background:#2a1c10; box-shadow:0 0 24px rgba(255,157,60,.15); }
+  .note { color:var(--dim); font-size:.72rem; letter-spacing:.12em; margin-top:14px; line-height:1.7; }
+  footer { text-align:center; color:#5c5342; font-size:.72rem; letter-spacing:.2em; padding:26px 14px 40px; line-height:1.8; }
+  /* --- ігровий режим --- */
+  #stage { position:fixed; inset:0; z-index:100; background:#000; display:none; }
+  #stage.on { display:block; }
+  #stage iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  #quit { position:fixed; top:10px; right:12px; z-index:102; display:none;
+    background:rgba(8,7,5,.7); border:1px solid #57431f; color:var(--paper); cursor:pointer;
+    padding:8px 16px; font:bold .72rem "Courier New", monospace; letter-spacing:.2em; }
+  #quit:hover { color:var(--amber); }
+  #stage.on ~ #quit, #quit.on { display:block; }
+  /* ГРАТИ — завжди вгорі */
+  .topbar { position:fixed; top:0; left:0; right:0; z-index:48; display:flex; justify-content:flex-end;
+    padding:10px 14px; background:linear-gradient(rgba(5,5,5,.92), rgba(5,5,5,0)); pointer-events:none; }
+  .topbtn { pointer-events:auto; border:1px solid #57431f; color:var(--paper); cursor:pointer;
+    background:rgba(20,14,8,.85); padding:10px 26px; font:bold clamp(.75rem, 2.6vw, .95rem) "Courier New", monospace;
+    letter-spacing:.25em; transition:all .2s; animation:blink 2.4s infinite; }
+  .topbtn:hover { color:var(--amber); border-color:var(--amber); box-shadow:0 0 18px rgba(255,157,60,.2); }
+  @media (max-width:640px) { .scan { opacity:.35; } }
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<div class="vig"></div>
+
+<div id="stage"><iframe id="gframe" src="about:blank" allowfullscreen allow="autoplay"></iframe></div>
+<button id="quit">✖ ВИЙТИ З ГРИ</button>
+<div class="topbar"><div class="topbtn" id="playtop">▶ ГРАТИ</div></div>
+
+<header>
+  <h1>VV13.<b>ROOM15</b></h1>
+  <div class="slogan">15 APARTMENTS. 15 WORLDS. ONE EVIL.</div>
+  <div class="part">ПОВНА ГРА — АКТ I «ПРОБУДЖЕННЯ» · АКТ II «СХОДОВА КЛІТКА» · АКТ III «ROOM-15»</div>
+</header>
+
+<main>
+  <div class="story">
+    <p>Харків, стара п'ятиповерхова хрущовка. Сімнадцять років тому в її підвалі військова лабораторія
+    <b>«ВВ-13»</b> проводила експеримент ROOM-15: п'ятнадцять житлових секцій — п'ятнадцять стабільних
+    входів у суміжний вимір. Коли обладнання вимкнули, зупинити було вже пізно: квартири стали світами,
+    а з виміру почало просочуватися те, що документи називають <b>НУЛЬ</b> — воно копіює людей, голоси,
+    спогади і кімнати.</p>
+    <p>Ти — <b>Лєгенда</b>. Суб'єкт 08. Ти прокидаєшся у своїй квартирі №8 на третьому поверсі.
+    Годинник 16:20, надворі гроза, світло ледь тліє — але час тут більше не працює як раніше.
+    Збери докази, прослухай касету «ЗРАЗОК 08-В», перевір дзеркало — і знайди ключ-картку,
+    щоб вийти з квартири. Акт I завершується там, де починається під'їзд.</p>
+    <p>Гра йде від першої особи. Темрява — твій ворог і твій інструмент: вимикачі кімнат працюють,
+    а ліхтарик має три режими — теплий, червоний і мигання. Обережно: коли світло вимкнено,
+    у квартирі щось переміщується.</p>
+    <p><b>Це повна гра, три акти.</b> Акт I — квартира і докази. Акт II — під'їзд: п'ятнадцять поштових
+    ящиків зі свіжими іменами, дзеркало квартири 9, яке пізнає тебе, касети Толіка з 12-ї і лом біля
+    сміттєпроводу. Акт III — підвал-лабораторія ROOM-15: п'ятнадцять капсул, суб'єкт 07, який говорить
+    чужими голосами, колби РР-7 — і пульт із трьома важелями: <b>СТРАЖ, СТЕРТИ або СТАТИ НУЛЄМ.</b>
+    А в сходовій клітині на тебе полює НУЛЬ: він не рухається, поки на нього дивляться, навчається
+    твоїх звичок і приходить частіше, якщо шуміти. Булава — в руках. Смерть тут — не кінець: день 41
+    просто повторюється з автосейву.</p>
+  </div>
+
+  <h2>ЩО ВСЕРЕДИНІ</h2>
+  <div class="grid">
+    <div class="card"><b>АКТ I · КВАРТИРА №8</b>Зал, К1, К2, кухня, ванна, туалет, коридор, прихожа, кладовка,
+      балкон — реалістичні меблі Poly Haven у стилі PS1-хорору. 6 завдань · 8 доказів · щоденник [J].</div>
+    <div class="card"><b>АКТ II · ПІД'ЇЗД</b>Сходова клітка, що веде «в самі себе»: 15 поштових ящиків,
+      квартири 9 і 12 (дзеркало-подвійник і касети Толіка), забите вікно 15-ї, люда в підвал.
+      Нове завдання — лом біля сміттєпроводу.</div>
+    <div class="card"><b>АКТ III · ROOM-15</b>Підвал-лабораторія 1987 року: коридор з 15 капсулами,
+      розмова з суб'єктом 07 (голос переливається: сусід → Толік → ти), колби РР-7 і пульт з ТРИМА ФІНАЛАМИ.</div>
+    <div class="card"><b>НУЛЬ ПОЛЮЄ</b>Він з'являється в під'їзді і підвалі. Віз-ангел: не рухається,
+      поки на нього дивишся. Червоний далекий промінь ліхтарика відганяє, булава (2 удари) згинув —
+      але кожен удар і кожен шум робить його злішим. Він пам'ятає навіть твої смерті.</div>
+    <div class="card"><b>ВИЖИВАННЯ</b>СИЛИ · ЇЖА · ВОДА · СТРАХ: шукай їжу і воду, спи на кушетці,
+      крафт у рюкзаку. Листочки дають ейфорію — теплий фільтр і спокій. Страх дає глюки.</div>
+    <div class="card"><b>СИСТЕМИ</b>Панель [ESC]: чутливість, гучність, якість графіки, FPS.
+      Автосейв + 3 слоти + експорт/імпорт. 18 досягнень. Геймпад. Фото-режим [P].
+      Аміент-музика і шар погоні, коли НУЛЬ близько.</div>
+  </div>
+
+  <h2>КЕРУВАННЯ</h2>
+  <table>
+    <tr><td class="k">WASD + МИША</td><td>рух і огляд · SHIFT — біг · клік — захват миші</td></tr>
+    <tr><td class="k">R</td><td>взаємодія: документи, дзеркало, телевізор, щиток, двері, огляд предметів, меблі, сон</td></tr>
+    <tr><td class="k">E</td><td>двері і вимикачі світла · F — показати/сховати меблі</td></tr>
+    <tr><td class="k">L</td><td>ліхтарик: теплий бл/дал → червоний бл/дал → мигання → вимк</td></tr>
+    <tr><td class="k">B</td><td>РЮКЗАК: інвентар, крафт (бинт, каплі, заряд), нотатки-підказки</td></tr>
+    <tr><td class="k">J</td><td>щоденник Лєгенди: завдання і докази</td></tr>
+    <tr><td class="k">C</td><td>встати з меблів · присісти</td></tr>
+    <tr><td class="k">ВИЖИВАННЯ</td><td>СИЛИ · ЇЖА · ВОДА · СТРАХ: шукай їжу і воду, спи на кушетці, сиди відпочивати — інакше повільнієш, а страх дає глюки</td></tr>
+    <tr><td class="k">ЛКМ / SPACE</td><td>УДАР булавою (у під'їзді і підвалі) · 2 удари відганяють НУЛЯ, кожен -18 стаміни</td></tr>
+    <tr><td class="k">ESC</td><td>панель СИСТЕМИ: налаштування, сейви (авто + 3 слоти), експорт/імпорт, досягнення</td></tr>
+    <tr><td class="k">P</td><td>фото-режим: приховує інтерфейс · [F8] — підказка</td></tr>
+    <tr><td class="k">ГЕЙМПАД</td><td>лістик — рух, правий — огляд · A — взаємодія · X — рюкзак · Y — щоденник · LB — ліхтарик · RT — удар · Start — система</td></tr>
+    <tr><td class="k">ТЕЛЕФОН</td><td>джойстик зліва, свайп справа — огляд, кнопки в куті (взяти · рюкзак · щоденник · УДАР · СИСТЕМА)</td></tr>
+  </table>
+
+  <div class="playwrap">
+    <div class="playbtn" id="play">▶ ГРАТИ</div>
+    <div class="note">гра завантажує моделі окремими файлами — запускай через GitHub Pages<br>
+      або локальний сервер (python -m http.server) · ~1 МБ сторінка + ~103 МБ моделей · звук увімкнись [M]</div>
+  </div>
+</main>
+
+<footer>
+  © VV13.ROOM15 · ПОВНА ГРА · АКТ I «ПРОБУДЖЕННЯ» · АКТ II «СХОДОВА КЛІТКА» · АКТ III «ROOM-15»<br>
+  ТРИ ФІНАЛИ. ОДИН ДЕНЬ 41. ВІН НАВЧАЄТЬСЯ.
+</footer>
+
+<script>
+  const stage = document.getElementById('stage');
+  const frame = document.getElementById('gframe');
+  const quit  = document.getElementById('quit');
+  document.getElementById('play').addEventListener('click', () => {
+    frame.src = 'game.html';
+    stage.classList.add('on');
+    quit.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    try { if (frame.requestFullscreen) frame.requestFullscreen(); } catch(e) {}
+  });
+  document.getElementById('playtop').addEventListener('click', () => document.getElementById('play').click());
+  quit.addEventListener('click', () => {
+    frame.src = 'about:blank';
+    stage.classList.remove('on');
+    quit.classList.remove('on');
+    document.body.style.overflow = '';
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  });
+</script>
+</body>
+</html>

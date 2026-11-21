@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>VV13.ROOM15 — КВАРТИРА №8</title>
+<title>vv13.legend — VV13.ROOM15 · КВАРТИРА №8</title>
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; }
   #app, #app canvas { position: fixed; inset: 0; width: 100%; height: 100%; }
@@ -157,7 +157,7 @@
 </div>
 
 <div id="title">
-  <h1>VV13.<b>ROOM15</b></h1>
+  <h1>vv13.<b>legend</b></h1>
   <div class="sub">15 APARTMENTS. 15 WORLDS. ONE EVIL.</div>
   <div class="apt">ЧАСТИНА 4 — «ПРОБУДЖЕННЯ»</div>
   <div class="story">Харків, стара п'ятиповерхова хрущовка. Сімнадцять років тому в її підвалі військова лабораторія
@@ -4179,6 +4179,7 @@ const _phLoader = new THREE.GLTFLoader(_phMgr);
 // placeModel(імʼя, x, z, rotY, масштаб, колізія W, D, yOff) — модель GLTF з файлу models/<name>.gltf
 let phPending = 0;
 const _phText = {}, _phLoading = {};
+window.__phProto = {};   /* прототипи розпарсених GLTF — для миттєвого огляду 3D */
 function loadPH(name) {
   if (_phText[name]) return Promise.resolve(_phText[name]);
   if (!_phLoading[name]) _phLoading[name] = fetch('models/' + name + '.gltf')
@@ -4194,6 +4195,7 @@ function placeModel(name, x, z, ry, sc, colW, colD, yOff) {
   phPending++;
   loadPH(name).then(t => {
     _phLoader.parse(t, 'models/', gltf => {
+      try { window.__phProto[name] = gltf.scene.clone(true); } catch (e) {}   /* прототип для огляду 3D (кеш) */
       gltf.scene.scale.setScalar(sc || 1);
       gltf.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
       g.add(gltf.scene);
@@ -4804,7 +4806,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('dining_chair_02', 1.75, 1.15, rad(270), 1.0, 0.45, 0.5);
   placeModel('dining_chair_02', 1.75, 2.05, rad(270), 1.0, 0.45, 0.5);
   placeModel('Sofa_01', 4.05, 0.62, 0, 1.5, 3.5, 1.25);                   // диван у куті
-  placeModel('mid_century_lounge_chair', 2.6, 4.2, rad(170), 1.0, 0.9, 0.9);           // кріс (заміна ArmChair_01 — його немає в repo)ло
+  placeModel('ArmChair_01', 2.6, 4.2, rad(170), 1.0, 0.9, 0.9);           // крісло (справжня модель Poly Haven повернута у гру)
   placeModel('vintage_wooden_drawer_01', 6.5, 0.58, 0, 0.95, 1.8, 0.95);  // комод біля північної стіни
   placeModel('wooden_bookshelf_worn', 3.0, 4.38, rad(180), 1.0, 2.2, 0.62); // стелаж з книгами біля південної стіни
   placeModel('Rockingchair_01', 0.78, 3.32, rad(40), 1.0, 0.85, 0.95, -0.102); // качалка біля вікна
@@ -4868,7 +4870,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('desk_lamp_arm_01', 15.2, 2.55, rad(140), 0.55, null, null, 0.86);
   wcurtain(16.28, 2.9, rad(270), 2.0);
   placeModel('hanging_picture_frame_02', 13.45, 1.15, 0, 1.0, null, null, 1.75); // картина над кушеткою
-  placeModel('pocket_watch', 14.85, 1.5, rad(25), 1.0, null, null, 0.78);   // будильник (заміна alarm_clock_01)дильник на тумбочці (пак decor-art)
+  placeModel('alarm_clock_01', 14.85, 1.5, rad(25), 1.0, null, null, 0.78);   // будильник на тумбочці (пак decor-art — модель повернута)
   placeModel('katana_stand_01', 12.6, 1.16, rad(0), 1.0, null, null, 1.5);    // катана на підставці — стіна К2 (пак decor-art)
   const cl = grp(12.3, 1.07, 0);                                          // годинник на стіні
   cl.add(cyl(0.16, 0.16, 0.04, mat({ color: 0x1a1a1c }), 0, 2.1, 0.05, 20));
@@ -4913,7 +4915,7 @@ function wcurtain(x, z, ry, w) {
   fr.add(box(0.66, 0.02, 0.66, M_dark, 0, 1.18, 0));
   fr.add(cyl(0.015, 0.015, 0.5, M_metal, 0.26, 1.35, 0.12, 8));
   fr.add(cyl(0.015, 0.015, 0.4, M_metal, 0.26, 0.7, 0.12, 8));
-  placeModel('plunger', 7.85, 9.78, rad(80), 1.0, null, null, 0.045); // (заміна baseball_bat)а лежить під стіною
+  placeModel('baseball_bat', 7.85, 9.78, rad(80), 1.0, null, null, 0.045); // бита лежить під стіною (модель повернута)
   placeModel('crowbar_01', 7.69, 10.5, rad(90), 1.0, null, null, 1.25);    // лом вертикально на стіні (пак tools-equipment)
   placeModel('WetFloorSign_01', 13.4, 10.5, rad(15), 1.0, 0.32, 0.32);     // знак «обережно, мокрий пол» біля ванни (пак industrial)
 }
@@ -4936,11 +4938,59 @@ function wcurtain(x, z, ry, w) {
 }
 // ===== ТУАЛЕТ =====
 {
-  const wc = grp(10.5, 12.7, rad(180), 0.7, 0.75);
-  wc.add(box(0.38, 0.4, 0.5, M_white, 0, 0.2, 0.08));
-  wc.add(box(0.36, 0.06, 0.44, M_white, 0, 0.42, 0.06));
-  wc.add(box(0.4, 0.42, 0.18, M_white, 0, 0.55, -0.24));
-  wc.add(box(0.08, 0.5, 0.06, M_white, 0.24, 0.75, -0.24)); // труба
+  const wc = grp(10.5, 12.7, rad(180), 0.6, 0.75);
+  /* ПРАВКА ГРАВЦЯ «модель туалету в туалет»: спершу пробуємо СПРАВЖНЮ модель
+     models/toilet_01.gltf (покладеш файл у repo — гра сама підхопить).
+     Якщо файла немає — унітаз з повноцінної геометрії: чаша, бачок, кришка,
+     сидіння, кнопка зливу. Тонкі ящики більше не «туалет». */
+  const M_porc = mat({ color: 0xe9e7e0, roughness: 0.26, metalness: 0.02 });
+  const M_porcD = mat({ color: 0xd9d6cc, roughness: 0.4, metalness: 0.02 });
+  const M_water = mat({ color: 0x2e4a52, roughness: 0.15, metalness: 0.1 });
+  const M_chrom = mat({ color: 0x9aa4ac, roughness: 0.22, metalness: 0.85 });
+  const prim = new THREE.Group(); wc.add(prim); wc.__prim = prim; prim.visible = false;
+  /* УНІТАЗ v2 (правка гравця «постав модель в туалет»): на Poly Haven унітаза НЕМАЄ
+     (перевірено всі 522 моделі API) — тому сан-кераміка будується з профільного
+     обертання: плавний п'єдестал, еліптична чаша, сидіння з напів-піднятою кришкою,
+     бачок з крилкою, хром-кнопка. Якщо в repo з'явиться models/toilet_01.gltf —
+     справжня модель замінить це автоматично (хук нижче лишено). */
+  const pedPts = [
+    [0.001, 0.0], [0.150, 0.0], [0.156, 0.05], [0.150, 0.10], [0.120, 0.20],
+    [0.112, 0.26], [0.128, 0.30], [0.142, 0.315]
+  ].map(p => new THREE.Vector2(p[0], p[1]));
+  const ped = new THREE.Mesh(new THREE.LatheGeometry(pedPts, 20), M_porc);
+  ped.position.set(0, 0, 0.1); prim.add(ped);
+  // чаша — сплюснута сфера
+  const bw = new THREE.Mesh(new THREE.SphereGeometry(0.21, 16, 12), M_porc);
+  bw.scale.set(1, 0.6, 1.18); bw.position.set(0, 0.365, 0.05); prim.add(bw);
+  // вода
+  const hole = new THREE.Mesh(new THREE.CircleGeometry(0.145, 16), M_water);
+  hole.rotation.x = -Math.PI / 2; hole.position.set(0, 0.443, 0.06); prim.add(hole);
+  // обідок
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.033, 10, 20), M_porc);
+  rim.rotation.x = Math.PI / 2; rim.position.set(0, 0.452, 0.06); prim.add(rim);
+  // сидіння
+  const seat = new THREE.Mesh(new THREE.TorusGeometry(0.178, 0.028, 10, 20), M_porcD);
+  seat.rotation.x = Math.PI / 2; seat.position.set(0, 0.49, 0.06); prim.add(seat);
+  // кришка (напів-піднята, спирається на бачок) + петлі
+  const lid = new THREE.Mesh(new THREE.CylinderGeometry(0.175, 0.175, 0.022, 20), M_porcD);
+  lid.scale.set(1, 1, 1.16); lid.rotation.x = rad(-72); lid.position.set(0, 0.55, -0.13); prim.add(lid);
+  prim.add(box(0.14, 0.03, 0.05, M_chrom, 0, 0.50, -0.12));
+  // бачок (корпус + крилка з виступом) + кнопка + кріплення + труба
+  prim.add(box(0.37, 0.5, 0.17, M_porc, 0, 0.62, -0.27));
+  prim.add(box(0.40, 0.045, 0.21, M_porc, 0, 0.895, -0.27));
+  prim.add(cyl(0.034, 0.034, 0.02, M_chrom, 0, 0.93, -0.27, 12));
+  prim.add(box(0.06, 0.24, 0.05, M_porc, 0.15, 0.55, -0.345));
+  prim.add(box(0.08, 0.5, 0.06, M_porcD, 0.24, 0.75, -0.305));
+  // спершу — справжня модель; 404 → примітиви видимі
+  phPending++;
+  loadPH('toilet_01').then(t => {
+    _phLoader.parse(t, 'models/', gltf => {
+      gltf.scene.scale.setScalar(1.0);
+      gltf.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+      wc.add(gltf.scene);
+      wc.__prim.visible = false; phPending--; computeFurnCols();
+    }, err => { wc.__prim.visible = true; phPending--; computeFurnCols(); console.warn('PH toilet_01', err && err.message || err); });
+  }).catch(() => { wc.__prim.visible = true; phPending--; computeFurnCols(); });
   const rl = grp(9.78, 12.0, rad(90));
   rl.add(cyl(0.05, 0.05, 0.1, M_white, 0.06, 0.75, 0, 10));
   rl.children[0].rotation.x = Math.PI / 2;
@@ -5082,14 +5132,14 @@ function wcurtain(x, z, ry, w) {
 /* ===== ХВИЛЯ 2: зал — книги, ігри, вази, годинник, декор ===== */
 {
   placeModel('chess_set', 1.15, 1.75, rad(15), 1.0, null, null, 0.456);
-  placeModel('clipboard', 1.85, 1.15, rad(80), 1.0, null, null, 0.456);   // (заміна binder_notebook)
+  placeModel('binder_notebook', 1.85, 1.15, rad(80), 1.0, null, null, 0.456);   // блокнот-папка (модель повернута)
   placeModel('carved_wooden_elephant', 0.95, 1.05, rad(-30), 1.0, null, null, 0.456);
-  placeModel('jug_01', 2.05, 1.9, rad(0), 1.0, null, null, 0.456);   // (заміна brass_candleholders)
-  placeModel('office_notepads', 6.15, 0.62, rad(-90), 1.3, null, null, 1.04)   // (заміна book_encyclopedia_set_01);
+  placeModel('brass_candleholders', 2.05, 1.9, rad(0), 1.0, null, null, 0.456);   // латунні підсвічники (модель повернута)
+  placeModel('book_encyclopedia_set_01', 6.15, 0.62, rad(-90), 1.3, null, null, 1.04);   // енциклопедії на полиці (модель повернута)
   placeModel('ceramic_vase_01', 6.0, 0.52, rad(0), 1.0, null, null, 1.04);
   placeModel('mantel_clock_01', 6.6, 0.52, rad(-10), 1.0, null, null, 1.04);
   placeModel('bronze_whale_statue', 6.05, 0.5, rad(-25), 1.0, null, null, 1.04);
-  placeModel('ceramic_vase_01', 3.6, 4.15, rad(0), 1.0, null, null, 0);   // (заміна antique_ceramic_vase_01)
+  placeModel('antique_ceramic_vase_01', 3.6, 4.15, rad(0), 1.0, null, null, 0);   // антикна керамічна ваза (модель повернута)
   placeModel('vintage_grandfather_clock_01', 7.25, 0.7, rad(-90), 1.0, 0.62, 0.45, 0.116);
   placeModel('throw_pillows_01', 3.9, 0.75, rad(90), 1.2, null, null, 0.35);
   placeModel('vintage_suitcase', 6.7, 1.6, rad(75), 1.0, 0.45, 0.2, 0.343);
@@ -5097,7 +5147,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('vintage_telephone_wall_clock', 5.9, 4.66, rad(180), 1.0, null, null, 1.55);
   placeModel('bull_head', 6.75, 4.67, rad(180), 1.0, null, null, 1.85);
   placeModel('Chandelier_03', 3.7, 2.4, 0, 1.0, null, null, 2.72);
-  placeModel('fern_02', 7.3, 4.25, rad(45), 0.7, null, null, 0);   // вазон (заміна anthurium_botany_01)
+  placeModel('anthurium_botany_01', 7.3, 4.25, rad(45), 0.7, null, null, 0);   // антуріум у вазоні (модель повернута)
 }
 /* ===== ХВИЛЯ 2: К1 — музика, ігри, дротс, касетник ===== */
 {
@@ -5108,7 +5158,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('office_notepads', 14.35, 8.15, rad(45), 1.0, null, null, 0.55);
   placeModel('portable_cassette_player', 14.85, 8.55, rad(45), 1.0, null, null, 0.55);
   placeModel('dartboard', 12.5, 9.44, rad(180), 1.0, null, null, 1.75);
-  placeModel('rubber_duck_toy', 7.95, 9.95, rad(0), 1.0, null, null, 0.03);   // (заміна baseball_01)
+  placeModel('baseball_01', 7.95, 9.95, rad(0), 1.0, null, null, 0.03);   // м'яч бейсбольний під стіною (модель повернута)
   placeModel('gaming_console', 15.55, 8.3, rad(25), 1.0, 0.4, 0.35, 0.03);
   placeModel('Chandelier_02', 12.6, 7.0, 0, 1.0, null, null, 1.79);
 }
@@ -5126,7 +5176,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('vintage_binocular', 13.2, 1.55, rad(70), 1.0, null, null, 0.42);
   placeModel('metal_office_desk', 11.25, 1.35, rad(180), 0.95, 1.9, 0.9);
   placeModel('vintage_flashlight', 11.5, 1.4, rad(240), 1.0, null, null, 0.79);
-  placeModel('vintage_oil_lamp', 11.05, 1.3, rad(0), 1.0, null, null, 0.79);   // (заміна brass_diya_lantern)
+  placeModel('brass_diya_lantern', 11.05, 1.3, rad(0), 1.0, null, null, 0.79);   // латунний ліхтар-дія (модель повернута)
   placeModel('chemistry_set', 15.95, 5.7, rad(30), 1.0, null, null, 0);
   placeModel('Chandelier_03', 13.0, 2.4, 0, 0.9, null, null, 2.72);
   placeModel('wicker_basket_02', 10.1, 5.4, rad(60), 1.2, null, null, 0);
@@ -5142,7 +5192,7 @@ function wcurtain(x, z, ry, w) {
 /* ===== ХВИЛЯ 2: ванна — аптечка і хімія ===== */
 {
   placeModel('medical_box', 12.15, 12.9, rad(180), 1.0, null, null, 1.35);
-  placeModel('multi_cleaner_bottle', 13.65, 12.55, rad(-40), 1.0, null, null, 0);  // (заміна all_purpose_cleaner)
+  placeModel('all_purpose_cleaner', 13.65, 12.55, rad(-40), 1.0, null, null, 0);   // універсальний чистячий засіб (модель повернута)
   placeModel('multi_cleaner_bottle', 13.55, 12.75, rad(120), 1.0, null, null, 0);
   placeModel('drain_cleaner', 13.8, 12.7, rad(200), 1.0, null, null, 0);
   placeModel('plastic_container', 11.9, 12.6, rad(0), 1.0, null, null, 0);
@@ -5153,7 +5203,7 @@ function wcurtain(x, z, ry, w) {
    зайти не вдавалося. Усі колайдери тепер по стінах, центр вільний. */
 {
   placeModel('metal_tool_chest', 9.25, 1.5, rad(0), 1.0, 0.7, 0.35, 0.19);     // східна стіна (повернуто: реальний Box3 моделі ~1.1м — не перекриває кімнату)
-  placeModel('old_gas_mask', 9.25, 1.5, rad(200), 1.0, null, null, 0.62);      // протигаз на скрині (заміна bench_vice_01)
+  placeModel('bench_vice_01', 8.15, 0.95, rad(90), 1.0, null, null, 0.5);   // лабі верстатні на полиці кладовки (модель повернута)
   placeModel('adjustable_wrench', 9.2, 1.45, rad(70), 1.0, null, null, 0.5);
   placeModel('pipe_wrench', 9.32, 1.6, rad(200), 1.0, null, null, 0.5);
   placeModel('tool_cart', 7.95, -0.75, rad(0), 1.0, 0.75, 1.3);                // західна стіна, південь
@@ -5176,7 +5226,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('oil_tin', 9.15, 0.25, rad(80), 1.0, null, null, 0);
   placeModel('small_oil_can_01', 9.35, -1.15, rad(160), 1.0, null, null, 0);
   placeModel('spray_paint_bottles', 9.15, 2.2, rad(45), 1.0, null, null, 0);
-  placeModel('trashbag', 7.95, -1.5, rad(0), 1.0, 0.5, 0.5);                   // (заміна barrel_03)
+  placeModel('barrel_03', 8.05, -1.15, rad(0), 1.0, 0.65, 0.65);               // бочка в кладовці (модель повернута)
   placeModel('wooden_bucket_01', 9.3, 0.1, rad(0), 1.0, null, null, 0);
   placeModel('ladder_sectioned_01', 9.35, 1.93, rad(180), 1.0, null, null, 0);
   placeModel('worn_metal_rack', 7.98, 0.15, rad(90), 1.0, 0.6, 0.92);
@@ -5185,7 +5235,7 @@ function wcurtain(x, z, ry, w) {
   placeModel('industrial_caged_sconce', 8.6, 1.97, rad(180), 1.0, null, null, 1.9);
   placeModel('caged_hanging_light', 8.85, 0.3, 0, 1.0, null, null, 2.5);
   placeModel('machete', 8.35, 1.96, rad(180), 1.0, null, null, 1.4);
-  placeModel('ornate_medieval_mace', 8.85, 1.96, rad(180), 1.0, null, null, 1.45);  // (заміна antique_katana_01)
+  placeModel('antique_katana_01', 8.85, 1.96, rad(180), 1.0, null, null, 1.45);  // антична катана на підставці (модель повернута)
   placeModel('ornate_war_hammer', 6.3, 0.6, rad(-30), 1.0, null, null, 0.05);  // ПЕРЕНЕСЕНО у зал
 }
 /* ===== ХВИЛЯ 2: балкон — плантери і барахло (+0.09 плита) ===== */
@@ -5194,10 +5244,10 @@ function wcurtain(x, z, ry, w) {
   placeModel('steel_frame_shelves_02', 17.9, 8.9, rad(270), 1.0, 0.55, 1.0, 0.09); // полиця з кладовки — балкон широкий
   placeModel('planter_box_02', 17.3, 6.6, rad(90), 1.0, null, null, 0.09);
   placeModel('planter_box_03', 17.35, 7.6, rad(90), 1.0, null, null, 0.09);
-  placeModel('propane_tank', 18.2, 6.6, rad(90), 0.9, 0.6, 0.6, 0.09);   // піч-заміна (barrel_stove немає в repo)
+  placeModel('barrel_stove', 18.2, 6.6, rad(90), 0.9, 0.6, 0.6, 0.09);      // грубка-бочка на балконі (модель повернута)
   placeModel('compost_bag_02', 17.5, 8.9, rad(50), 1.0, null, null, 0.09);
   placeModel('plastic_bottle_gallon', 17.75, 8.95, rad(80), 1.0, null, null, 0.09);
-  placeModel('drain_cleaner', 18.1, 8.8, rad(160), 1.0, null, null, 0.09);   // (заміна bleach_bottle)
+  placeModel('bleach_bottle', 18.1, 8.8, rad(160), 1.0, null, null, 0.09);       // відбілювач на балконі (модель повернута)
   placeModel('watering_can_metal_01', 17.6, 5.75, rad(140), 1.0, null, null, 0.09);
   placeModel('can_rusted', 18.05, 5.6, rad(60), 1.0, null, null, 0.09);
   placeModel('nettle_plant', 17.7, 7.1, rad(120), 0.8, null, null, 0.09);
@@ -5358,22 +5408,29 @@ flashG.position.set(0, -0.33, 0.03);
 flashG.rotation.x = rad(84);
 armR.el.add(flashG);
 if (window.__handWeapon) window.__handWeapon(armR);   // булава (розстановка)
-const flashLight = new THREE.SpotLight(0xffe2ac, 0, 13, 0.42, 0.78, 1.9); // як у Пітьмі: вузький, м'який край, швидке падіння
+const flashLight = new THREE.SpotLight(0xffe2ac, 0, 13, 0.42, 0.62, 1.9); // як у Пітьмі (penumbra знижено — м'який край з'їдав близьке світло)
+/* ФІКС «ліхтарик зблизу»: промінь з руки покриває конус — предмет ЗА 10-50 см
+   від гравця опиняється поза вузьким конусом і лишается темним. Додаємо ШИРОКЕ
+   ближнє fill-світло від камери: те, біля чого стоїш, завжди освітлене. */
+const flashFill = new THREE.SpotLight(0xffe2ac, 0, 4.6, 1.2, 0.45, 1.0); // ФІКС зблизу: широкий, з малим penumbra — предмет впритул СВІТИТЬСЯ
+const flashFillTgt = new THREE.Object3D();
+flashFill.castShadow = false;
+scene.add(flashFillTgt); flashFill.target = flashFillTgt; scene.add(flashFill);
 flashLight.castShadow = true;
 flashLight.shadow.mapSize.set(IS_TOUCH ? 512 : 1024, IS_TOUCH ? 512 : 1024);
-flashLight.shadow.camera.near = 0.3; flashLight.shadow.camera.far = 16; flashLight.shadow.bias = -0.003;
+flashLight.shadow.camera.near = 0.05; flashLight.shadow.camera.far = 16; flashLight.shadow.bias = -0.003; flashLight.shadow.normalBias = 0.02;
 const flashTarget = new THREE.Object3D();
 scene.add(flashTarget); // у сцені → loop задає СВІТОВІ координати цілі
 flashLight.target = flashTarget;
 scene.add(flashLight);   // ліхтарик живе у сцені — керується з руки у кожному кадрі
-const handGlow = new THREE.PointLight(0xffd9a8, 0, 2.6, 2); // м'яка підсвітка руки
+const handGlow = new THREE.PointLight(0xffd9a8, 0, 3.4, 1.8); // м'яка підсвітка руки (шире — предмети впритул не залишаться темними)
 scene.add(handGlow);
 let flashOn = true;
 let flashMode = 0; // 0 теплий-бл · 1 теплий-дал · 2 червоний-бл · 3 червоний-дал · 4 мигання
 const FLASH_MODES = [
-  { n: 'ТЕПЛИЙ · БЛИЖНІЙ',   c: 0xffe2ac, i: 2.35, g: 0xffd9a8, ang: 0.88, dist: 5.5, dec: 1.15, near: 1 },
+  { n: 'ТЕПЛИЙ · БЛИЖНІЙ',   c: 0xffe2ac, i: 2.35, g: 0xffd9a8, ang: 0.95, dist: 5.5, dec: 1.15, pen: 0.4, near: 1 },
   { n: 'ТЕПЛИЙ · ДАЛЬНІЙ',   c: 0xffe2ac, i: 2.1,  g: 0xffd9a8, ang: 0.42, dist: 13,  dec: 1.9 },
-  { n: 'ЧЕРВОНИЙ · БЛИЖНІЙ', c: 0xff2414, i: 1.95, g: 0xff3020, ang: 0.88, dist: 5.5, dec: 1.2,  near: 1 },
+  { n: 'ЧЕРВОНИЙ · БЛИЖНІЙ', c: 0xff2414, i: 1.95, g: 0xff3020, ang: 0.95, dist: 5.5, dec: 1.2,  pen: 0.4, near: 1 },
   { n: 'ЧЕРВОНИЙ · ДАЛЬНІЙ', c: 0xff2414, i: 1.8,  g: 0xff3020, ang: 0.38, dist: 13,  dec: 1.9 },
   { n: 'МИГАННЯ',            c: 0xffe2ac, i: 2.1,  g: 0xffd9a8, ang: 0.5,  dist: 9,   dec: 1.6 }
 ];
@@ -5386,7 +5443,7 @@ function setFlash(on) {
   const M = FLASH_MODES[flashMode];
   flashLight.color.setHex(M.c); handGlow.color.setHex(M.g);
   lensM.color.setHex(M.c); lensM.emissive.setHex(M.c);
-  flashLight.angle = M.ang; flashLight.distance = M.dist; flashLight.decay = M.dec;
+  flashLight.angle = M.ang; flashLight.distance = M.dist; flashLight.decay = M.dec; flashLight.penumbra = M.pen || 0.62;
   lensM.emissiveIntensity = on ? 1.4 : 0;
 }
 function flashCycle() { window.__sfx && __sfx('flash_click', 0.45);
@@ -5492,6 +5549,10 @@ if (IS_TOUCH) {
      пропускає його, і рідні click-події кнопок вікна (ЗАКРИТИ ВІКНО, використати
      предмет, крафт, ✕) нарешті спрацьовують на мобільному */
   const isUI = t => t && t.closest && t.closest('#survBp,#journal,#survExam,#inspect,#introCine,#ph_window,#cassette,#title,#msg,#prompt,#panelSys,#dlgAct23,#finWin,#deathCard');
+  /* СКРОЛИ МЕНЮ (правка гравця): тачі, що почались у вікні, НЕ ламаємо —
+   глобальний touchmove не повинен робити preventDefault для них, бо він
+   блокував рідний скрол рюкзака/щоденника/системи. */
+  const uiTouchIds = new Set();
 
   function joyStart(id, x, y) {
     joyId = id; joyCX = x; joyCY = y;
@@ -5516,7 +5577,8 @@ if (IS_TOUCH) {
   addEventListener('touchstart', e => {
     if (!started) return;                   // тап по титулці стартує гру
     for (const t of e.changedTouches) {
-      if (isBtn(t.target) || isUI(t.target)) continue;
+      if (isBtn(t.target)) continue;
+      if (isUI(t.target)) { uiTouchIds.add(t.identifier); continue; }
       e.preventDefault();
       if (joyId === null && t.clientX < innerWidth * 0.45 && t.clientY > innerHeight * 0.3) {
         joyStart(t.identifier, t.clientX, t.clientY);
@@ -5527,8 +5589,12 @@ if (IS_TOUCH) {
   }, opts);
   addEventListener('touchmove', e => {
     if (!started) return;
-    e.preventDefault();
+    /* СКРОЛИ: якщо всі тачі цього жесту — з вікон меню, НЕ preventDefault — даємо рідний скрол */
+    let uiOnly = true;
+    for (const t of e.changedTouches) if (!uiTouchIds.has(t.identifier)) { uiOnly = false; break; }
+    if (!uiOnly) e.preventDefault();
     for (const t of e.changedTouches) {
+      if (uiTouchIds.has(t.identifier)) continue;          // скрол у вікні — не огляд
       if (t.identifier === joyId) joyMove(t.clientX, t.clientY);
       else if (t.identifier === lookId) {
         P.yaw -= (t.clientX - lastLX) * 0.0052;                 // крутитись
@@ -5539,6 +5605,7 @@ if (IS_TOUCH) {
   }, opts);
   const endT = e => {
     for (const t of e.changedTouches) {
+      uiTouchIds.delete(t.identifier);
       if (t.identifier === joyId) joyEnd();
       if (t.identifier === lookId) lookId = null;
     }
@@ -5574,7 +5641,7 @@ let nearDoor = null;
 function tryInteract() {
   if (!nearDoor) return;
   const d = nearDoor;
-  if (d.__tripBlocked) { showMsg('Меблі завалили двері. Не підлізти. Чекай на інший тріп...', 3200); sfxThump(); shake(0.25); return; }
+  if (d.__tripBlocked) { showMsg('Меблі завалили двері. Відкинь завал: стань обличчям до меблів і [УДАР] — пробіл (на моб. — кнопка УДАР).', 4600); sfxThump(); shake(0.25); return; }
   if (d.locked) { showMsg(d.lockedMsg || 'Зачинено.'); sfxThump(); shake(0.25); return; }
   d.open = !d.open;
   d.tgt = d.open ? d.swing * rad(86) : 0;
@@ -5758,48 +5825,11 @@ function audioInit() {
   if (AC) return;
   AC = new (window.AudioContext || window.webkitAudioContext)();
   master = AC.createGain(); master.gain.value = 0.9; master.connect(AC.destination);
-  // НОВА МУЗИКА ВІДКРИТТЯ: мінорний акорд-дрон (Am) + підсвітка + серцебиття + далекі удари
-  const mkOsc = (freq, type, gainV, dest) => {
-    const o = AC.createOscillator(); o.type = type; o.frequency.value = freq;
-    const g = AC.createGain(); g.gain.value = gainV; o.connect(g); g.connect(dest || master); o.start();
-    return o;
-  };
-  const droneF = AC.createBiquadFilter(); droneF.type = 'lowpass'; droneF.frequency.value = 320; droneF.Q.value = 0.8;
-  const droneG = AC.createGain(); droneG.gain.value = 0.055; droneF.connect(droneG); droneG.connect(master);
-  mkOsc(55, 'sawtooth', 0.5, droneF);      // A1
-  mkOsc(55.7, 'sawtooth', 0.5, droneF);    // біття
-  mkOsc(82.4, 'triangle', 0.35, droneF);   // E2
-  mkOsc(110, 'sine', 0.22, droneF);        // A2
-  mkOsc(130.8, 'sine', 0.1, droneF);       // C3 — мінорна терція
-  mkOsc(36.7, 'sine', 0.5, master);        // суб-бас
-  // «дихання» фільтра
-  const lfo = AC.createOscillator(); lfo.frequency.value = 0.06;
-  const lg = AC.createGain(); lg.gain.value = 130;
-  lfo.connect(lg); lg.connect(droneF.frequency); lfo.start();
-  // шум-вітер з повільним приливом
-  const buf = AC.createBuffer(1, AC.sampleRate * 2, AC.sampleRate);
-  const dd = buf.getChannelData(0);
-  for (let i = 0; i < dd.length; i++) dd[i] = (Math.random() * 2 - 1) * 0.5;
-  const nsrc = AC.createBufferSource(); nsrc.buffer = buf; nsrc.loop = true;
-  const nf = AC.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = 420; nf.Q.value = 0.6;
-  const ng = AC.createGain(); ng.gain.value = 0.028;
-  nsrc.connect(nf); nf.connect(ng); ng.connect(master); nsrc.start();
-  const wlfo = AC.createOscillator(); wlfo.frequency.value = 0.11;
-  const wg = AC.createGain(); wg.gain.value = 0.016;
-  wlfo.connect(wg); wg.connect(ng.gain); wlfo.start();
-  // серцебиття (два глухі удари кожні ~1.6 с)
-  setInterval(() => {
-    if (!AC || muted) return;
-    tone(58, 40, 0.16, 0.16, 'sine');
-    setTimeout(() => tone(52, 36, 0.14, 0.11, 'sine'), 240);
-  }, 1600);
-  // далекі металеві «привиди будинку»
-  setInterval(() => {
-    if (!AC || muted || Math.random() < 0.4) return;
-    const f0 = 900 + Math.random() * 900;
-    tone(f0, f0 * 0.6, 0.5, 0.022, 'sine');
-    setTimeout(() => burst(0.35, 260 + Math.random() * 200, 0.02), 300 + Math.random() * 400);
-  }, 9000);
+  /* ЧИСТИЙ ЗВУК (правка гравця): генеративні шари ВИДАЛЕНО — дрон, шум-вітер,
+     синтез-серцебиття, металеві тони. Вони й давали «пффф пппппф».
+     Тепер звучать ТІЛЬКИ файли з sounds/: музика (amb_dark — фоновий луп,
+     amb_hell/amb_whisper — стингери) і звуки взаємодій (двері, кроки, кліки,
+     грім/дощ). tone()/burst() лишились лише як рідкісний UI-фідбек (клік огляду). */
 }
 function burst(dur, freq, gainV, type) {
   if (!AC || muted) return;
@@ -5824,16 +5854,9 @@ function tone(f0, f1, dur, gainV, type) {
 const sfxStep = run => { if (window.__sfx && __sfx('steps_wood', run ? 0.3 : 0.22, 0.85 + Math.random() * 0.35)) { if (window.__tripEcho) window.__tripEcho(run); return; } burst(0.09, 320 + Math.random() * 160, run ? 0.16 : 0.11, 'lowpass'); if (window.__tripEcho) window.__tripEcho(run); };
 const sfxCreakDoor = () => { if (window.__sfx && __sfx('door_creak', 0.6, 0.9 + Math.random() * 0.25)) return; tone(130, 65, 0.7, 0.07, 'sawtooth'); burst(0.5, 240, 0.03); };
 const sfxThump = () => { if (window.__sfx && __sfx('door_slam', 0.4, 0.7 + Math.random() * 0.2)) return; tone(60, 28, 0.3, 0.4); burst(0.15, 120, 0.2, 'lowpass'); };
-const sfxStatic = () => burst(1.2, 2200, 0.05, 'highpass');
 function toggleMute() { muted = !muted; if (master) master.gain.value = muted ? 0 : 0.9; showMsg(muted ? 'Звук вимкнено' : 'Звук увімкнено'); }
-let nextCreak = 6;
-function horrorAudio(t) {
-  if (t > nextCreak) {
-    nextCreak = t + 9 + Math.random() * 16;
-    if (Math.random() < 0.5) tone(90 + Math.random() * 60, 55, 0.6 + Math.random() * 0.5, 0.045, 'sawtooth');
-    else { tone(48, 30, 0.4, 0.2); burst(0.2, 90, 0.1, 'lowpass'); }
-  }
-}
+/* horrorAudio: випадкові синтез-скрипи ВИДАЛЕНО (правка гравця) */
+function horrorAudio(t) {}
 
 /* ---------- СВІТЛО КІМНАТ: АВТОНОМНЕ (вимикачів більше немає) ----------
    Вдень видно і так. Вночі — ліхтарик, а лампи час від часу ВАМПІРЯТЬ САМІ:
@@ -5864,7 +5887,7 @@ function nightSelfEnd(silent) {
   roomOn[room] = false;
   if (!silent && Math.random() < 0.45) {
     window.__vv13glitch && window.__vv13glitch(320);
-    window.__sfx && __sfx('amb_whisper', 0.16, 0.85 + Math.random() * 0.3);
+    /* шепіт-файл прибрано (правка гравця) */
   }
   nightActive = null;
   nightNext = 26 + Math.random() * 48;
@@ -6078,11 +6101,8 @@ function updateBolt(dt) {
   nextBolt -= dt;
   if (nextBolt <= 0) {
     nextBolt = 6 + Math.random() * 11; boltT = 0.55;
-    if (AC) setTimeout(() => {
-      if (!AC) return;
-      tone(70, 30, 1.1, 0.3); burst(0.7, 90, 0.22, 'lowpass');
-      setTimeout(() => burst(0.12, 2400, 0.09, 'highpass'), 130);
-    }, 300 + Math.random() * 900);
+    /* ГРІМ: тільки файл sounds/thunder.mp3 (грає у weather-системі) —
+       синтез-дубль «пффф» ВИДАЛЕНО (правка гравця «залиш тільки музику») */
   }
   if (boltT > 0) {
     boltT -= dt;
@@ -6093,14 +6113,8 @@ function updateBolt(dt) {
     if (boltT <= 0) applyEnv();
   }
 }
-// звук дощу
-let rainAcc = 0;
-function updateRainSfx(dt) {
-  if (!AC || muted) return;
-  if (!(envW || mixedW()).rain) { rainAcc = 0; return; }
-  rainAcc += dt;
-  if (rainAcc > 0.33) { rainAcc = 0; burst(0.3, 1400 + Math.random() * 900, 0.02, 'highpass'); }
-}
+// звук дощу — ТІЛЬКИ файл sounds/rain_loop.mp3 (синтез-шум прибрано, правка гравця)
+function updateRainSfx(dt) {}
 // вуличний фонар мерехтить
 function updateStreet(t) {
   const r = Math.sin(t * 13.7) * Math.sin(t * 4.31 + 1.3);
@@ -6142,8 +6156,7 @@ function updateTV(t) {
   if (t > tvNext) {
     tvNext = t + 35 + Math.random() * 45;
     tvOff = t + 1.0 + Math.random() * 0.9;
-    SS.forEach(sc => { sc.material = M_screenOn; }); // обидва ТВ блимають разом
-    sfxStatic();
+    SS.forEach(sc => { sc.material = M_screenOn; }); // обидва ТВ блимають разом (без звуку — правка гравця)
   }
 }
 
@@ -6350,8 +6363,15 @@ function loop() {
     handGlow.position.copy(_fv);
     // «живе» мерехтіння ліхтарика — як у Пітьмі
     const flt = performance.now() * 0.001;
-    flashLight.intensity = flashOn ? FLASH_MODES[flashMode].i * (flashMode === 4 ? flashBlinkK(flt) : (0.93 + 0.07 * Math.sin(flt * 11.3) * Math.sin(flt * 4.7))) : 0;
-    handGlow.intensity = flashOn ? (FLASH_MODES[flashMode].near ? 0.6 : 0.22) * (flashMode === 4 ? flashBlinkK(flt) : 1) : 0;
+    const _blinkMain = flashMode === 4 ? flashBlinkK(flt) : (0.93 + 0.07 * Math.sin(flt * 11.3) * Math.sin(flt * 4.7));
+    flashLight.intensity = flashOn ? FLASH_MODES[flashMode].i * _blinkMain : 0;
+    handGlow.intensity = flashOn ? (FLASH_MODES[flashMode].near ? 1.0 : 0.42) * (flashMode === 4 ? flashBlinkK(flt) : 1) : 0;
+    /* ФІКС зблизу: широке fill-світло прямо з камери — освітлює предмет, біля якого стоїш */
+    flashFill.color.copy(flashLight.color);
+    flashFill.position.set(camera.position.x, camera.position.y, camera.position.z);
+    flashFillTgt.position.set(camera.position.x + _fv2.x * 2.2, camera.position.y + _fv2.y * 2.2 - 0.55, camera.position.z + _fv2.z * 2.2); // приціл трохи вниз — бачимо і підлогу/ніжки впритул
+    flashFillTgt.updateMatrixWorld();
+    flashFill.intensity = flashOn ? (FLASH_MODES[flashMode].near ? 2.6 : 1.5) * _blinkMain : 0;
     // анімація дверей
     for (const d of doors) {
       if (Math.abs(d.ang - d.tgt) > 0.015) {
@@ -6361,7 +6381,6 @@ function loop() {
       }
     }
     updatePrompt();
-    horrorAudio(gtime);
     updateTV(gtime);
   }
   advanceEnv(dt);
@@ -6563,13 +6582,13 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   /* ---------- ЗВУК (через наявні tone/burst) ---------- */
   const sChime  = () => { tone(880, 1320, 0.18, 0.14, 'sine'); setTimeout(() => tone(1320, 1560, 0.22, 0.1, 'sine'), 160); };
   const sPick   = () => tone(520, 780, 0.12, 0.11, 'triangle');
-  const sWhisp  = () => { burst(0.5, 3000, 0.045, 'highpass'); setTimeout(() => burst(0.4, 2400, 0.04, 'highpass'), 550); setTimeout(() => burst(0.6, 3400, 0.035, 'highpass'), 1150); };
-  const sKnock  = () => { burst(0.09, 120, 0.3, 'lowpass'); setTimeout(() => burst(0.09, 110, 0.26, 'lowpass'), 420); setTimeout(() => burst(0.12, 95, 0.34, 'lowpass'), 830); };
+  const sWhisp  = () => {}; /* синтез-шепіт «пффф» ВИДАЛЕНО (правка гравця «залиш тільки музику») — подія лишається тільки текстом */
+  const sKnock  = () => { if (window.__sfx) { __sfx('door_slam', 0.2, 1.45); setTimeout(() => __sfx('door_slam', 0.18, 1.3), 420); setTimeout(() => __sfx('door_slam', 0.24, 1.15), 830); } };
   const sPhone  = () => { tone(1400, 1400, 0.4, 0.09, 'sine'); setTimeout(() => tone(1400, 1400, 0.4, 0.09, 'sine'), 800); };
-  const sGlitch = () => burst(0.3, 2500, 0.16, 'highpass');
+  const sGlitch = () => {}; /* синтез-статик «телевізор» ВИДАЛЕНО — vhs-ефект лишається візуально */
   const sSting  = () => { if (window.__sfx && __sfx('sting', 0.55)) { shake(1.2); return; } tone(1200, 240, 0.6, 0.38, 'sawtooth'); burst(0.5, 80, 0.5, 'lowpass'); shake(1.2); };
   const sLaugh  = () => { tone(880, 990, 0.09, 0.1, 'triangle'); setTimeout(() => tone(990, 880, 0.09, 0.1, 'triangle'), 130); setTimeout(() => tone(780, 660, 0.12, 0.08, 'triangle'), 260); };
-  const sSlam   = () => burst(0.25, 70, 0.5, 'lowpass');
+  const sSlam   = () => { if (window.__sfx) __sfx('door_slam', 0.4, 0.85); };
 
   /* ---------- ЗАВДАННЯ / HUD ---------- */
   function hourNow() { return (gameMin / 60) % 24; }
@@ -6849,7 +6868,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   window.__sfxInit = function() {
     if (__sfxCtx) { if (__sfxCtx.state === 'suspended') __sfxCtx.resume(); return; }
     try { __sfxCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
-    ['amb_dark', 'amb_whisper', 'amb_hell', 'thunder', 'rain_loop', 'door_creak', 'door_slam',
+    ['amb_dark', 'amb_hell', 'thunder', 'rain_loop', 'door_creak', 'door_slam',
      'steps_wood', 'switch_click', 'flash_click', 'heartbeat', 'sting', 'hum_electric'].forEach(a => {
       fetch('sounds/' + a + '.mp3').then(r => r.ok ? r.arrayBuffer() : Promise.reject())
         .then(ab => __sfxCtx.decodeAudioData(ab))
@@ -6857,8 +6876,8 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
         .catch(() => {});
     });
     setTimeout(() => {                                  // атмосфера після старту
-      const dark = __sfxLoop('amb_dark', 0.16);
-      const hum = __sfxLoop('hum_electric', 0.05);
+      const dark = __sfxLoop('amb_dark', 0.16);   // фоновий музичний луп
+      /* hum_electric (гул «пффф») ВИДАЛЕНО — правка гравця */
       let rainL = null;
       setInterval(() => {
         const w = WEATHERS[weatherIdx];
@@ -6873,7 +6892,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
         if (ambL.intensity < 0.09 && Math.random() < 0.8) __sfx('heartbeat', 0.1, 0.9);
       }, 2600);
       setInterval(() => {                               // рідкий шепіт
-        if (Math.random() < 0.5) __sfx('amb_whisper', 0.14, 1);
+        /* шепіт-файл прибрано (правка гравця) */
       }, 130000);
     }, 1500);
   };
@@ -6909,7 +6928,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   const nightNow = () => { const h = (gameMin / 60) % 24; return h >= 19.5 || h < 6.5; };
   const msg = (t, ms) => showMsg(t, ms || 3000);
   const sPick2 = () => tone(520, 780, 0.12, 0.11, 'triangle');
-  const sGlit = () => burst(0.3, 2500, 0.14, 'highpass');
+  const sGlit = () => {}; /* синтез-статик глюків ВИДАЛЕНО (правка гравця) */
 
   /* ---------- HUD: бари стану (ліворуч зверху) ---------- */
   const hud = document.createElement('div');
@@ -6996,7 +7015,9 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     const invRows = Object.keys(ITEMS).filter(k => INV[k] > 0).map(k => {
       const usable = !!USE[k];
       return '<div class="ir"><span>' + ITEMS[k] + ' ×' + INV[k] + '</span>' +
-        (usable ? '<button data-use="' + k + '">ВИКОРИСТИ</button>' : '<i>інгредієнт</i>') + '</div>';
+        '<span style="display:flex;gap:8px;align-items:center">' +
+        '<i class="bpLook" data-look="' + k + '" style="color:#8fb6c9;font-size:10px;letter-spacing:.1em;cursor:pointer;border:1px solid #2c4a56;padding:3px 8px;font-style:normal">ОГЛЯД 3D</i>' +
+        (usable ? '<button data-use="' + k + '">ВИКОРИСТИ</button>' : '<i>інгредієнт</i>') + '</span></div>';
     }).join('') || '<div class="empty">— порожньо. Шукай по квартирі: їжа на кухні, вода під рукой — [R] бере —</div>';
     const craftRows = RECIPES.map(r => {
       const ok = Object.keys(r.need).every(k => (INV[k] | 0) >= r.need[k]);
@@ -7013,6 +7034,15 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
       '<span class="close" style="align-self:center">[B] / [R] / [ESC] — закрити</span></div></div>';
     bp.querySelectorAll('[data-use]').forEach(b => b.addEventListener('click', () => useItem(b.dataset.use)));
     bp.querySelectorAll('[data-craft]').forEach(b => b.addEventListener('click', () => craft(RECIPES.find(r => r.id === b.dataset.craft))));
+    /* ПРАВКА ГРАВЦЯ: кнопка ОГЛЯД 3D у рядку інвентаря — крутим справжню модель */
+    bp.querySelectorAll('[data-look]').forEach(b => {
+      const fn = e => {
+        e.preventDefault(); e.stopPropagation();
+        try { window.__inspectModel && window.__inspectModel('Огляд: ' + ITEMS[b.dataset.look], BP_MODEL[b.dataset.look] || '', PKC[b.dataset.look] || 0x999999); } catch (err) {}
+      };
+      b.addEventListener('click', fn);
+      b.addEventListener('touchstart', fn, { passive: false });
+    });
     const bc = bp.querySelector('#bpClose');
     if (bc) bc.addEventListener('click', () => toggleBp());
   }
@@ -7025,6 +7055,24 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 
   /* ---------- ПИКАПИ: їжа / вода / інгредієнти по квартирі ---------- */
   const PKC = { water: 0x5ab9d8, food: 0xff9d3c, leaf: 0x7ec96a, rags: 0xb9b2a4, alco: 0xc9a03c, batt: 0xffd23c };
+  /* ПРАВКА ГРАВЦЯ «моделі взяв і перегляж»: підбір предмета грузить СПРАВЖНЮ
+     модель Poly Haven у вікно огляду (3D-крутити). Мапа: назва → модель з repo. */
+  const PKM = {
+    water: { 'пляшка': 'plastic_bottle_gallon', 'каністра': 'metal_jerrycan', 'каструля': 'pot_enamel_01', 'крану': 'jug_01', 'кран': 'jug_01', 'труба': 'jug_01' },
+    food: { 'яблуко': 'food_apple_01', 'лимон': 'lemon', 'цибуля': 'yellow_onion', 'консерви': 'russian_food_cans_01', 'пайок': 'long_life_food', 'круасан': 'croissant' },
+    leaf: { '_': 'nettle_plant' },
+    rags: { '_': 'trashbag' },
+    alco: { 'вино': 'wine_bottles_01', 'аптечка': 'medical_box' },
+    batt: null
+  };
+  const BP_MODEL = { water: 'plastic_bottle_gallon', food: 'food_apple_01', leaf: 'nettle_plant', rags: 'trashbag', alco: 'wine_bottles_01', batt: '' };
+  function pModel(p) {
+    const m = PKM[p.k];
+    if (!m) return '';
+    if (m['_']) return m['_'];
+    for (const key in m) if (p.n.indexOf(key) >= 0) return m[key];
+    return '';
+  }
   const PKG = new THREE.Group(); scene.add(PKG);
   const PICKUPS = [
     { k: 'water', n: 'Вода · пляшка', x: 15.6, z: 9.9, y: 0.95 },
@@ -7091,8 +7139,10 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   function takePickup(p) {
     p.mark.visible = false; INV[p.k] = (INV[p.k] | 0) + 1; sPick2();
     msg('У РЮКЗАК: ' + p.n.toUpperCase() + ' — [B] рюкзак', 2600); survSave();
-    /* ПЕРЕГЛЯД ФІГУР (правка гравця): показуємо модель — можна покрутити */
-    if (p.mark && p.mark.children[0] && window.__inspectItem) {
+    /* ПЕРЕГЛЯД ФІГУР (правка гравця): грузимо СПРАВЖНЮ модель Poly Haven — крутиться; якщо файла нема — кольорова фігура як раніше */
+    if (window.__inspectModel) {
+      try { window.__inspectModel(p.n, pModel(p), PKC[p.k]); } catch (e) {}
+    } else if (p.mark && p.mark.children[0] && window.__inspectItem) {
       try { window.__inspectItem(p.n, p.mark.children[0].clone(), PKC[p.k]); } catch (e) {}
     }
   }
@@ -7296,7 +7346,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
             liedScare = true;
             window.__survWatcher && (window.__survWatcher.visible = true);
             setTimeout(() => { window.__survWatcher && (window.__survWatcher.visible = false); }, 2600);
-            sGlit(); burst(0.5, 3000, 0.05, 'highpass'); SVS.fr = Math.min(100, SVS.fr + 12);
+            sGlit(); SVS.fr = Math.min(100, SVS.fr + 12); /* «пффф» прибрано */
             msg('На краю зору — ХТОСЬ СТОЇТЬ. Ти не дивишся туди. Не дивись.', 3600);
           }
         } else {
@@ -7325,7 +7375,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
       if (SVS.fr > 60) {
         const g = document.getElementById('grain');
         if (g) { g.style.opacity = Math.min(0.85, 0.3 + SVS.fr / 120); setTimeout(() => { g.style.opacity = ''; }, 900); }
-        sGlit(); if (Math.random() < 0.5) burst(0.4, 2400, 0.04, 'highpass');
+        sGlit(); /* «пффф» прибрано (правка гравця) */
         if (SVS.fr > 85 && Math.random() < 0.5) { shake(0.6); msg('ГОЛОС: «він грає твоєю рукою»', 2400); }
       }
     }
@@ -7415,6 +7465,47 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   window.__inspectItem = open;
   window.__inspectClose = close;
   window.__inspectOpen = () => !!(box && box.style.display === 'flex');
+  /* ПРАВКА ГРАВЦЯ «моделі взяв і перегляж»: огляд СПРАВЖНЬОЇ моделі Poly Haven.
+     Грузить models/<name>.gltf у те саме вікно (крутиться мишею/пальцем);
+     якщо модель не знайдена — кольорова фігура-фолбек, як раніше. */
+  window.__inspectModel = function(name, modelName, color) {
+    ensure();
+    if (!box) return;
+    /* вікно показуємо ОДРАЗУ (гузиться...), потім грузимо модель —
+       інакше кешований проміс резолвиться ДО показу вікна і перевірка display виходить рано */
+    box.querySelector('#inspT').textContent = 'ОГЛЯД: ' + (name || 'ПРЕДМЕТ').toUpperCase() + ' — ГРУЗИТЬСЯ...';
+    box.style.display = 'flex';
+    if (!raf) loop();
+    const fallback = () => {
+      if (!box) return;
+      const m = new THREE.Mesh(
+        new THREE.BoxGeometry(0.34, 0.34, 0.34),
+        new THREE.MeshStandardMaterial({ color: color || 0x999999, roughness: 0.5, transparent: true, opacity: 0.85 }));
+      window.__inspectItem(name, m, color);
+    };
+    if (!modelName) { fallback(); return; }
+    /* ФІКС «огляд висить»: спершу ПРОТОТИП (кеш усіх розпарсених GLTF — миттєво,
+       без повторного parse); якщо прототипу нема — грузимо з ТАЙМАУТОМ 6с:
+       SwiftShader/слабкі пристрої іноді не віддають колбек parse — тоді
+       показуємо кольорову фігуру-фолбек, вікно не застрягає на «ГРУЗИТЬСЯ». */
+    const proto = window.__phProto && window.__phProto[modelName];
+    if (proto) { try { window.__inspectItem(name, proto.clone(true), color); return; } catch (e) {} }
+    let settled = false;
+    const tm = setTimeout(() => {
+      if (!settled) { settled = true; fallback(); }
+    }, 6000);
+    loadPH(modelName).then(t => {
+      if (settled) return;
+      if (!box || box.style.display !== 'flex') { settled = true; clearTimeout(tm); return; }
+      _phLoader.parse(t, 'models/', gltf => {
+        if (settled) return;
+        settled = true; clearTimeout(tm);
+        if (!box || box.style.display !== 'flex') return;
+        try { window.__phProto[modelName] = gltf.scene.clone(true); } catch (e) {}
+        window.__inspectItem(name, gltf.scene, color);
+      }, () => { if (!settled) { settled = true; clearTimeout(tm); fallback(); } });
+    }).catch(() => { if (!settled) { settled = true; clearTimeout(tm); fallback(); } });
+  };
 })();
 
 
@@ -7651,7 +7742,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
         if (gh.lookT > 0.45) {                                             // подивився прямо — тінь зникає
           gh.phase = 2; gh.lookT = 0;
           window.__vv13glitch && window.__vv13glitch(260);
-          sfx('amb_whisper', 0.2, 0.8);
+          /* шепіт-файл прибрано */
         }
       }
       if (gh.phase === 0 && gh.t > 1.4) { gh.phase = 1; gh.t = 0; }
@@ -7692,7 +7783,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   window.__tripEcho = function(run) {
     if (!T.active || T.type !== 5) return;
     setTimeout(() => { sfx('steps_wood', 0.1, 0.55 + Math.random() * 0.1); }, 300 + Math.random() * 160);
-    if (Math.random() < 0.12) setTimeout(() => { sfx('amb_whisper', 0.1, 0.7); }, 900);
+    /* шепіт-файл прибрано (правка гравця) */
   };
 
   /* ---------- камера: хитання реальності ---------- */
@@ -7853,7 +7944,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     tint.style.opacity = '1';
     if (type === 0) vig.style.opacity = '0.9';
     msg(TT[type].msg, 6000);
-    sfx('amb_whisper', 0.3, 0.8);
+    /* шепіт-файл прибрано (правка гравця) */
     window.__survExit && window.__survExit();
     window.__examOff && window.__examOff();
     if (type === 0) { ghostTimer = 2; for (let i = 0; i < 2; i++) spawnGhost(); }
@@ -7938,9 +8029,13 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
       }
       if (gameMin >= T.tEnd) { end(); }
     } else {
-      /* розклад: тільки в квартирі */
+      /* розклад: тільки в квартирі.
+         ФІКС (правка гравця «викидати на вулицю не повинно»): тріп «ВУЛИЦЯ» (тип 4)
+         більше НІКОЛИ не запускається автоматично — саме він телепортував гравця
+         надвір, навіть якщо той сидів на стільці. Залишається лише для тестів
+         (window.__tripDebug.force(4)). Автопідбір — лише: ТІНІ/ЛЕВІТАЦІЯ/ПРОРОСТАННЯ/ЗСУВ/ЕХО. */
       if (wi0() && gameMin >= T.nextMin) {
-        start((Math.random() * TT.length) | 0);
+        start([0, 1, 2, 3, 5][(Math.random() * 5) | 0]);
       }
     }
   }
@@ -8294,6 +8389,10 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   }
   window.__enterStair = enterStair;
   window.__enterBase = enterBase;
+  window.__vv13tp = function(x, z, yaw) {          // дебаг-телепорт (тести: огляд туалету/кімнат)
+    P.x = x * S; P.z = z * S; if (yaw != null) P.yaw = yaw;
+    P.pitch = -0.15; P.speed = 0;
+  };
   window.__enterApt = function() {                 // повернення (фінали не повертають, хук для тестів)
     worldIdx = 0; worldGroup.visible = true; myGroup.visible = false;
     lampsArr.forEach(l => { if (l._wasOn != null) { l.on = l._wasOn; l._wasOn = null; } });
@@ -8427,7 +8526,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     nullG.position.set(NS.x * WSX, 0, NS.z * WSX);
     nullG.visible = true;
     spawnFlicker = 1.2;
-    sfx('amb_whisper', 0.3); sfx('heartbeat', 0.22, 0.85);
+    sfx('heartbeat', 0.22, 0.85); /* шепіт прибрано, серцебиття лишилось */
     window.__vv13glitch && window.__vv13glitch(420);
     msg('ВІН ТУТ. Не відводь погляд — і не дивись надто довго.', 3800);
     window.__musicChase && window.__musicChase(true);
@@ -8530,7 +8629,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
           if (d < bd) { bd = d; best = it; }
         }
         if (best && window.__tripKick && window.__tripKick(best)) return;
-        burst(0.14, 140, 0.3, 'lowpass');
+        /* мимо: тільки клік замаху (flash_click вище) — синтез-шум прибрано */
         return;
       }
       const d = Math.hypot(NS.x * WSX - P.x, NS.z * WSX - P.z);
@@ -8544,7 +8643,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
         else { NS.state = 3; NS.tInState = 0; msg('Від удару він відступає крок — і знову стоїть.', 2600); }
         window.__ach && window.__ach('hit');
       } else {
-        burst(0.12, 180, 0.25, 'lowpass');
+        if (window.__sfx) __sfx('door_slam', 0.2, 1.5);
       }
     }, 190);
   }
@@ -8620,7 +8719,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     }
 
     /* червоний промінь відганяє */
-    if (inBeam(true) && NS.state !== 3) { NS.state = 3; NS.tInState = 0; sfx('amb_whisper', 0.25, 1.4); NS.agr = Math.max(0, NS.agr - 4); }
+    if (inBeam(true) && NS.state !== 3) { NS.state = 3; NS.tInState = 0; NS.agr = Math.max(0, NS.agr - 4); }
     else if (inBeam(false) && NS.state !== 4 && NS.state !== 3) { NS.state = 4; NS.stunT = 1.6; sfx('flash_click', 0.5, 0.5); }
 
     /* позиція/поворот меша */
@@ -8631,20 +8730,21 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     if (d < 1.5 * S && NS.state !== 3) { die(); return; }
 
     /* шепіт/серце за дистанцією */
-    if (Math.random() < dt * (d < 10 * S ? 0.5 : 0.08)) sfx('amb_whisper', d < 8 * S ? 0.22 : 0.1, 0.9 + Math.random() * 0.3);
+    /* шепіт НУЛЯ прибрано (правка гравця) */
     if (d < 7 * S) window.__musicTension && window.__musicTension(1 - d / (7 * S));
   }
   tick(0);
 
-  /* ---------- ВВІД: ЛКМ/геймпад — удар (тільки у нових світах) ---------- */
+  /* ---------- ВВІД: ЛКМ/геймпад — удар.
+     ПРАВКА ГРАВЦЯ «бити — зроби щоб він махав»: удар тепер працює і в КВАРТИРІ —
+     булава махає, меблі відкидає, завалені двері звільняє. У нових світах — бій з НУЛЕМ. */
   document.addEventListener('mousedown', e => {
     if (!started || dead) return;
-    if (!(window.__worldIdx && window.__worldIdx() > 0)) return;
     if (e.button === 0 && document.pointerLockElement) swing();
   });
   window.addEventListener('keydown', e => {
     if (!started || dead) return;
-    if (e.code === 'Space' && (window.__worldIdx() | 0) > 0) swing();
+    if (e.code === 'Space' && !e.repeat) swing();
   });
 
   /* ---------- АГРЕСІЯ ВІД ГРАВЦЯ: біг/світло/спокій ---------- */
@@ -8809,7 +8909,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     if (w.mirror9) { msg('Дзеркало 9-ї. Твій відбиток поводиться. звичайно.', 3000); return; }
     if (w.gaze9 < 0.5) { msg('Спочатку ПОДИВИСЬ у дзеркало (2 секунди, не більше). Він мусить бачити, що ти не боїшся.', 4200); return; }
     WS({ mirror9: true });
-    sfx('amb_whisper', 0.3); window.__vv13glitch && window.__vv13glitch(500);
+    window.__vv13glitch && window.__vv13glitch(500); /* шепіт прибрано */
     msg('ВІДБИТОК ПІДНЯВ ГОЛОВУ НА ПОЛ-СЕКУНДИ РАНШЕ ЗА ТЕБЕ — і знову став тобою.\nТи пройшов перевірку. Сусід із записки так не зміг.', 5200);
     window.__ach && window.__ach('mirror9');
     window.__nullAgr(-8);
@@ -8834,7 +8934,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     if (w.tapes >= 3) { msg('Записувач шипить. Усі три касети прослухані.', 2800); return; }
     const i = w.tapes;
     WS({ tapes: i + 1, tapeDone: i + 1 >= 3 });
-    sfx('amb_whisper', 0.26, 0.8);
+    /* шепіт-файл прибрано (правка гравця) */
     window.__vv13glitch && window.__vv13glitch(600);
     msg(TAPES[i], 6800);
     window.__nullAgr(4);
@@ -9397,6 +9497,22 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     mk('bAtk', 'УДАР', () => window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space' })));
   }
 
+  /* ---------- СКРОЛИ ВСІХ МЕНЮ (правка гравця): видимі скролбари + висота ---------- */
+  (function() {
+    const sc = document.createElement('style');
+    sc.textContent =
+      '::-webkit-scrollbar{width:10px;height:10px}' +
+      '::-webkit-scrollbar-track{background:rgba(0,0,0,.4)}' +
+      '::-webkit-scrollbar-thumb{background:#57431f;border:2px solid rgba(0,0,0,.4);border-radius:5px}' +
+      '::-webkit-scrollbar-thumb:hover{background:#d8a03c}' +
+      '*{scrollbar-width:thin;scrollbar-color:#8a6a2c rgba(0,0,0,.4)}' +
+      '#survBp .box,#journal .box,#panelSys>div,#survExam,.uxWinScroll{' +
+        '-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain}' +
+      '#dlgAct23>div,#finWin>div,#deathCard .box,#cassette,#ph_window{' +
+        'max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain}';
+    document.head.appendChild(sc);
+  })();
+
   /* ---------- ФОТО-РЕЖИМ CSS ---------- */
   const ph = document.createElement('style');
   ph.textContent = 'body.photo #survHud,body.photo #objHud,body.photo #envHud,body.photo .tbtn,body.photo #wTag,body.photo #mapC,body.photo #prompt,body.photo #survExam,body.photo .a{opacity:0 !important;pointer-events:none !important}' +
@@ -9408,130 +9524,10 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 })();
 
 
-/* ======================================================================
-   ГЕНЕРАТИВНИЙ ЗВУКОВИЙ ШАР: неповторювані випадкові події довкола.
-   Кожен звук синтезується з рандомних параметрів (тон, фільтр, панорама,
-   ритм, кількість імпульсів) — жоден не звучить двічі однаково.
-   Щільність залежить від страху, світу і тріпу. Реальні записи Freesound
-   лишаються основою атмосфери — цей шар лише доповнює їх «живим» будинком.
-   ====================================================================== */
-(function() {
-  if (window.__vv13GenSnd) return; window.__vv13GenSnd = true;
-  let last = -1, tNext = 4 + ((Math.random() * 5) | 0);
-  const R = Math.random;
-  function pan(node, x) {
-    if (AC.createStereoPanner) { const p = AC.createStereoPanner(); p.pan.value = x; node.connect(p); p.connect(master); }
-    else node.connect(master);
-  }
-  function env(g, v, a, d) {
-    const t = AC.currentTime;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, v), t + a);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
-  }
-  const gen = [
-    function creak() {                       /* скрип підлоги / меблів */
-      const o = AC.createOscillator(); o.type = 'sawtooth';
-      const f0 = 55 + R() * 50; o.frequency.setValueAtTime(f0, AC.currentTime);
-      o.frequency.linearRampToValueAtTime(f0 * (0.7 + R() * 0.5), AC.currentTime + 0.5 + R());
-      const fl = AC.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = 320 + R() * 380; fl.Q.value = 6;
-      const g = AC.createGain(); env(g, 0.035 + R() * 0.03, 0.12, 0.7 + R() * 0.8);
-      const lfo = AC.createOscillator(); lfo.frequency.value = 5 + R() * 7;
-      const lg = AC.createGain(); lg.gain.value = 0.4 + R() * 0.5;
-      lfo.connect(lg); lg.connect(g.gain);
-      o.connect(fl); fl.connect(g); pan(g, R() * 1.6 - 0.8);
-      o.start(); lfo.start(); o.stop(AC.currentTime + 1.9); lfo.stop(AC.currentTime + 1.9);
-    },
-    function knock() {                       /* далекі удари у стіну */
-      const n = 2 + ((R() * 3) | 0);
-      for (let i = 0; i < n; i++) setTimeout(() => {
-        if (!AC || AC.state !== 'running') return;
-        burst(0.16 + R() * 0.1, 130 + R() * 130, 0.05 + R() * 0.045, 'lowpass');
-      }, i * (140 + R() * 320));
-    },
-    function clank() {                       /* металевий дзвін труби/батареї */
-      const n = 2 + ((R() * 2) | 0), base = 480 + R() * 900;
-      for (let i = 0; i < n; i++) {
-        const o = AC.createOscillator(); o.type = 'sine';
-        o.frequency.value = base * (1 + i * (0.13 + R() * 0.2));
-        const g = AC.createGain(); env(g, (0.028 + R() * 0.02) / (i + 1), 0.008, 0.5 + R() * 0.7);
-        o.connect(g); pan(g, R() * 1.6 - 0.8);
-        o.start(); o.stop(AC.currentTime + 1.4);
-      }
-    },
-    function wind() {                        /* шепіт протягу */
-      const dur = 1.8 + R() * 2.2;
-      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
-      const dd = buf.getChannelData(0);
-      for (let i = 0; i < dd.length; i++) dd[i] = (R() * 2 - 1) * Math.sin(Math.PI * i / dd.length);
-      const s = AC.createBufferSource(); s.buffer = buf;
-      const f = AC.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 2.2;
-      f.frequency.setValueAtTime(300 + R() * 200, AC.currentTime);
-      f.frequency.linearRampToValueAtTime(700 + R() * 500, AC.currentTime + dur * 0.6);
-      f.frequency.linearRampToValueAtTime(280 + R() * 160, AC.currentTime + dur);
-      const g = AC.createGain(); g.gain.value = 0.03 + R() * 0.03;
-      s.connect(f); f.connect(g); pan(g, R() * 1.4 - 0.7);
-      s.start();
-    },
-    function stutter() {                     /* електрика: заїкання лампи */
-      const n = 4 + ((R() * 6) | 0);
-      for (let i = 0; i < n; i++) setTimeout(() => {
-        if (!AC || AC.state !== 'running') return;
-        tone(85 + R() * 90, 60 + R() * 60, 0.05 + R() * 0.06, 0.03, 'square');
-      }, i * (45 + R() * 110));
-    },
-    function drip() {                        /* краплі з труби */
-      const n = 1 + ((R() * 3) | 0);
-      for (let i = 0; i < n; i++) setTimeout(() => {
-        if (!AC || AC.state !== 'running') return;
-        tone(900 + R() * 800, 260 + R() * 140, 0.1, 0.035, 'sine');
-      }, i * (220 + R() * 500));
-    },
-    function rumble() {                      /* низький гул стін */
-      const dur = 2.5 + R() * 2.5;
-      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
-      const dd = buf.getChannelData(0);
-      let v = 0;
-      for (let i = 0; i < dd.length; i++) { v = v * 0.985 + (R() * 2 - 1) * 0.15; dd[i] = v; }
-      const s = AC.createBufferSource(); s.buffer = buf;
-      const f = AC.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 55 + R() * 45;
-      const g = AC.createGain(); env(g, 0.05 + R() * 0.045, 0.9, dur - 1);
-      s.connect(f); f.connect(g); g.connect(master);
-      s.start();
-    },
-    function murmur() {                      /* «голос» — формантний шум за стіною */
-      const dur = 0.8 + R() * 1.1;
-      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
-      const dd = buf.getChannelData(0);
-      for (let i = 0; i < dd.length; i++) dd[i] = (R() * 2 - 1) * Math.sin(Math.PI * i / dd.length);
-      const s = AC.createBufferSource(); s.buffer = buf;
-      const f = AC.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 7;
-      f.frequency.setValueAtTime(700 + R() * 500, AC.currentTime);
-      f.frequency.linearRampToValueAtTime(1200 + R() * 700, AC.currentTime + dur);
-      const g = AC.createGain(); g.gain.value = 0.022 + R() * 0.02;
-      s.connect(f); f.connect(g); pan(g, R() * 1.6 - 0.8);
-      s.start();
-    }
-  ];
-  setInterval(() => {
-    if (!AC || muted || AC.state !== 'running') return;
-    if (!started || dead) return;
-    if (--tNext > 0) return;
-    let fr = 20;
-    try { const st = window.__survState && window.__survState(); if (st) fr = st.fr; } catch (e) {}
-    const wi = (window.__worldIdx && window.__worldIdx()) | 0;
-    let wait = 16 + R() * 26;                                /* спокій: раз на ~16-42 с */
-    if (fr > 55) wait *= 0.55;                               /* страх — частіше */
-    if (fr > 85) wait *= 0.5;
-    if (wi > 0) wait *= 0.7;                                 /* нові світи — частіше */
-    try { if (window.__tripState && window.__tripState().active) wait *= 0.6; } catch (e) {}
-    tNext = Math.max(2, Math.round(wait / 2));               /* тік інтервалу = 2 с */
-    let i = (R() * gen.length) | 0;
-    if (i === last) i = (i + 1 + ((R() * (gen.length - 1)) | 0)) % gen.length;
-    last = i;
-    try { gen[i](); } catch (e) {}
-  }, 2000);
-})();
+/* ГЕНЕРАТИВНИЙ ЗВУКОВИЙ ШАР ПОВНІСТЮ ВИДАЛЕНО (правка гравця «залиш тільки
+   музику з саунд папки»): випадкові синтез-звуки (скрип, стук, дзвін, вітер,
+   електрика, краплі, гул, «голос») звучали кожні 16-42 с і псували атмосферу.
+   Атмосфера тепер: музика sounds/amb_dark.mp3 + подієві стингери + погода. */
 
 /* ---------- ✕ ЗАКРИТИ на всіх вікнах (рюкзак / огляд / щоденник / система) ---------- */
 (function() {

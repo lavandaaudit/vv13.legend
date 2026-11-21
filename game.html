@@ -102,6 +102,13 @@
     display: flex; align-items: center; justify-content: center;
   }
   .tbtn.on { background: rgba(163,44,34,.55); border-color: #d8a03c; color: #ffd98a; }
+  /* ЛАНДШАФТ (телефон горизонтально): усі кнопки — одним компактним рядом у
+     нижньому правому куті. Більше не треба перевертати телефон, щоб знайти кнопку */
+  @media (orientation: landscape) and (max-height: 560px) {
+    #touchBtns { bottom: 8px; right: 8px; grid-template-columns: repeat(8, auto); gap: 5px; }
+    .tbtn { min-width: 34px; height: 24px; font-size: 8.5px; padding: 0 5px; opacity: .92; }
+    #bBack { top: 8px; }
+  }
 </style>
 </head>
 <body>
@@ -4129,14 +4136,42 @@ function _neutralTexURI(r, g, b) {
   _genTexCache[k] = uri;
   return uri;
 }
+/* СПИСОК ТЕКСТУР, ЩО РЕАЛЬНО ЛЕЖАТЬ У repo (models/textures/, 625 шт) —
+   сгенерований з дерева репозиторію. Пріоритет завантаження:
+   1) вшиті base64 (_phFiles)  2) справжній файл з repo  3) схожа наявна (TEX_SUB)
+   4) нейтральна ARM/N/E  5) процедурна генерація — ніколи не 404, модель не падає */
+const REPO_TEX = new Set('Armchair_01_arm_1k.jpg Armchair_01_diff_1k.jpg Armchair_01_nor_gl_1k.jpg Camera_01_body_arm_1k.jpg Camera_01_body_diff_1k.jpg Camera_01_body_nor_gl_1k.jpg Camera_01_lens_body_arm_1k.jpg Camera_01_lens_body_diff_1k.jpg Camera_01_lens_body_nor_gl_1k.jpg Camera_01_strap_arm_1k.jpg Camera_01_strap_diff_1k.jpg Camera_01_strap_nor_gl_1k.jpg Chandelier_02_arm_1k.jpg Chandelier_02_diff_1k.jpg Chandelier_02_nor_gl_1k.jpg Chandelier_03_arm_1k.jpg Chandelier_03_diff_1k.jpg Chandelier_03_nor_gl_1k.jpg Chandelier_03_opacity_1k.jpg ClassicConsole_01_arm_1k.jpg ClassicConsole_01_diff_1k.jpg ClassicConsole_01_nor_gl_1k.jpg ClassicNightstand_01_arm_1k.jpg ClassicNightstand_01_diff_1k.jpg ClassicNightstand_01_nor_gl_1k.jpg CoffeeTable_01_arm_1k.jpg CoffeeTable_01_diff_1k.jpg CoffeeTable_01_nor_gl_1k.jpg Rockingchair_01_arm_1k.jpg Rockingchair_01_diff_1k.jpg Rockingchair_01_nor_gl_1k.jpg SchoolDesk_01_arm_1k.jpg SchoolDesk_01_diff_1k.jpg SchoolDesk_01_nor_gl_1k.jpg Shelf_01_arm_1k.jpg Shelf_01_diff_1k.jpg Shelf_01_nor_gl_1k.jpg Sofa_01_arm_1k.jpg Sofa_01_diff_1k.jpg Sofa_01_nor_gl_1k.jpg Television_01_arm_1k.jpg Television_01_diff_1k.jpg Television_01_nor_gl_1k.jpg Ukulele_01_arm_1k.jpg Ukulele_01_diff_1k.jpg Ukulele_01_nor_gl_1k.jpg WetFloorSign_01_arm_1k.jpg WetFloorSign_01_diff_1k.jpg WetFloorSign_01_nor_gl_1k.jpg WoodenTable_01_arm_1k.jpg WoodenTable_01_diff_1k.jpg WoodenTable_01_nor_gl_1k.jpg adjustable_wrench_arm_1k.jpg adjustable_wrench_diff_1k.jpg adjustable_wrench_nor_gl_1k.jpg alarm_clock_01_arm_1k.jpg alarm_clock_01_diff_1k.jpg alarm_clock_01_nor_gl_1k.jpg all_purpose_cleaner_arm_1k.jpg all_purpose_cleaner_diff_1k.jpg all_purpose_cleaner_nor_gl_1k.jpg anthurium_botany_01_arm_1k.jpg anthurium_botany_01_diff_1k.jpg anthurium_botany_01_nor_gl_1k.jpg antique_ceramic_vase_01_arm_1k.jpg antique_ceramic_vase_01_diff_1k.jpg antique_ceramic_vase_01_nor_gl_1k.jpg antique_katana_01_arm_1k.jpg antique_katana_01_diff_1k.jpg antique_katana_01_nor_gl_1k.jpg barrel_03_arm_1k.jpg barrel_03_diff_1k.jpg barrel_03_nor_gl_1k.jpg barrel_stove_arm_1k.jpg barrel_stove_diff_1k.jpg barrel_stove_nor_gl_1k.jpg baseball_01_diff_1k.jpg baseball_01_nor_gl_1k.jpg baseball_01_rough_1k.jpg baseball_bat_arm_1k.jpg baseball_bat_diff_1k.jpg baseball_bat_nor_gl_1k.jpg bench_vice_01_arm_1k.jpg bench_vice_01_diff_1k.jpg bench_vice_01_nor_gl_1k.jpg binder_notebook_arm_1k.jpg binder_notebook_diff_1k.jpg binder_notebook_nor_gl_1k.jpg bleach_bottle_01_arm_1k.jpg bleach_bottle_01_diff_1k.jpg bleach_bottle_01_nor_gl_1k.jpg book_encyclopedia_set_01_cover_arm_1k.jpg book_encyclopedia_set_01_cover_diff_1k.jpg book_encyclopedia_set_01_cover_nor_gl_1k.jpg book_encyclopedia_set_01_paper_diff_1k.jpg book_encyclopedia_set_01_paper_nor_gl_1k.jpg book_encyclopedia_set_01_paper_roughness_1k.jpg brass_candleholders_01_arm_1k.jpg brass_candleholders_01_diff_1k.jpg brass_candleholders_01_nor_gl_1k.jpg brass_candleholders_02_arm_1k.jpg brass_candleholders_02_diff_1k.jpg brass_candleholders_02_nor_gl_1k.jpg brass_candleholders_03_arm_1k.jpg brass_candleholders_03_diff_1k.jpg brass_candleholders_03_nor_gl_1k.jpg brass_candleholders_candles_arm_1k.jpg brass_candleholders_candles_diff_1k.jpg brass_candleholders_candles_nor_gl_1k.jpg brass_candleholders_flame_diff_1k.jpg brass_diya_lantern_arm_1k.jpg brass_diya_lantern_diff_1k.jpg brass_diya_lantern_nor_gl_1k.jpg brass_pan_01_arm_1k.jpg brass_pan_01_diff_1k.jpg brass_pan_01_nor_gl_1k.jpg brass_pot_02_arm_1k.jpg brass_pot_02_diff_1k.jpg brass_pot_02_nor_gl_1k.jpg bronze_ray_statue_arm_1k.jpg bronze_ray_statue_diff_1k.jpg bronze_ray_statue_nor_gl_1k.jpg bronze_whale_statue_arm_1k.jpg bronze_whale_statue_diff_1k.jpg bronze_whale_statue_nor_gl_1k.jpg bull_head_arm_1k.jpg bull_head_diff_1k.jpg bull_head_nor_gl_1k.jpg caged_hanging_light_arm_1k.jpg caged_hanging_light_diff_1k.jpg caged_hanging_light_emissive_1k.jpg caged_hanging_light_nor_gl_1k.jpg calathea_orbifolia_01_arm_1k.jpg calathea_orbifolia_01_diff_1k.jpg calathea_orbifolia_01_nor_gl_1k.jpg can_rusted_arm_1k.jpg can_rusted_diff_1k.jpg can_rusted_nor_gl_1k.jpg cardboard_box_01_arm_1k.jpg cardboard_box_01_diff_1k.jpg cardboard_box_01_nor_gl_1k.jpg carved_wooden_elephant_diff_1k.jpg carved_wooden_elephant_nor_gl_1k.jpg carved_wooden_elephant_rough_1k.jpg carved_wooden_plate_arm_1k.jpg carved_wooden_plate_diff_1k.jpg carved_wooden_plate_nor_gl_1k.jpg cassette_player_body_arm_1k.jpg cassette_player_body_diff_1k.jpg cassette_player_body_nor_gl_1k.jpg cassette_player_tape_arm_1k.jpg cassette_player_tape_nor_gl_1k.jpg cassette_player_tape_orangeblue_diff_1k.jpg ceramic_pot_arm_1k.jpg ceramic_pot_diff_1k.jpg ceramic_pot_nor_gl_1k.jpg ceramic_vase_01_arm_1k.jpg ceramic_vase_01_diff_1k.jpg ceramic_vase_01_nor_gl_1k.jpg chemistry_set_arm_1k.jpg chemistry_set_diff_1k.jpg chemistry_set_nor_gl_1k.jpg chess_set_board_arm_1k.jpg chess_set_board_diff_1k.jpg chess_set_board_nor_gl_1k.jpg chess_set_pieces_black_arm_1k.jpg chess_set_pieces_black_diff_1k.jpg chess_set_pieces_black_nor_gl_1k.jpg chess_set_pieces_white_arm_1k.jpg chess_set_pieces_white_diff_1k.jpg chess_set_pieces_white_nor_gl_1k.jpg circuit_board_arm_1k.jpg circuit_board_diff_1k.jpg circuit_board_nor_gl_1k.jpg classic_laptop_arm_1k.jpg classic_laptop_diff_1k.jpg classic_laptop_nor_gl_1k.jpg clipboard_arm_1k.jpg clipboard_diff_1k.jpg clipboard_nor_gl_1k.jpg compost_bag_02_arm_1k.jpg compost_bag_02_diff_1k.jpg compost_bag_02_nor_gl_1k.jpg concrete_cat_statue_arm_1k.jpg concrete_cat_statue_diff_1k.jpg concrete_cat_statue_nor_gl_1k.jpg croissant_arm_1k.jpg croissant_diff_1k.jpg croissant_nor_gl_1k.jpg cross_pein_hammer_arm_1k.jpg cross_pein_hammer_diff_1k.jpg cross_pein_hammer_nor_gl_1k.jpg crowbar_01_arm_1k.jpg crowbar_01_diff_1k.jpg crowbar_01_nor_gl_1k.jpg dartboard_arm_1k.jpg dartboard_diff_1k.jpg dartboard_nor_gl_1k.jpg desk_lamp_arm_01_arm_1k.jpg desk_lamp_arm_01_diff_1k.jpg desk_lamp_arm_01_nor_gl_1k.jpg dining_chair_02_arm_1k.jpg dining_chair_02_diff_1k.jpg dining_chair_02_nor_gl_1k.jpg drain_cleaner_arm_1k.jpg drain_cleaner_diff_1k.jpg drain_cleaner_nor_gl_1k.jpg drill_press_01_arm_1k.jpg drill_press_01_diff_1k.jpg drill_press_01_nor_gl_1k.jpg exterior_aircon_unit_01_arm_1k.jpg exterior_aircon_unit_01_diff_1k.jpg exterior_aircon_unit_01_nor_gl_1k.jpg exterior_aircon_unit_01_opacity_1k.jpg exterior_aircon_unit_02_arm_1k.jpg exterior_aircon_unit_02_nor_gl_1k.jpg exterior_aircon_unit_rusted_01_arm_1k.jpg exterior_aircon_unit_rusted_01_diff_1k.jpg exterior_aircon_unit_rusted_01_nor_gl_1k.jpg exterior_aircon_unit_rusted_02_arm_1k.jpg exterior_aircon_unit_rusted_02_nor_gl_1k.jpg exterior_aircon_unit_rusted_02_opacity_1k.jpg fancy_picture_frame_01_canvas_diff_1k.jpg fancy_picture_frame_01_canvas_nor_gl_1k.jpg fancy_picture_frame_01_canvas_rough_1k.jpg fancy_picture_frame_01_diff_1k.jpg fancy_picture_frame_01_nor_gl_1k.jpg fancy_picture_frame_01_rough_1k.jpg fancy_picture_frame_02_canvas_diff_1k.jpg fancy_picture_frame_02_canvas_nor_gl_1k.jpg fancy_picture_frame_02_canvas_rough_1k.jpg fancy_picture_frame_02_diff_1k.jpg fancy_picture_frame_02_nor_gl_1k.jpg fancy_picture_frame_02_rough_1k.jpg fern_02_arm_1k.jpg fern_02_diff_1k.jpg fern_02_nor_gl_1k.jpg fire_alarm_arm_1k.jpg fire_alarm_diff_1k.jpg fire_alarm_nor_gl_1k.jpg flathead_screwdriver_arm_1k.jpg flathead_screwdriver_diff_1k.jpg flathead_screwdriver_nor_gl_1k.jpg food_apple_01_diff_1k.jpg food_apple_01_nor_gl_1k.jpg food_apple_01_rough_1k.jpg gamepad_arm_1k.jpg gamepad_diff_1k.jpg gamepad_nor_gl_1k.jpg gaming_console_arm_1k.jpg gaming_console_diff_1k.jpg gaming_console_emissive_1k.jpg gaming_console_nor_gl_1k.jpg gothic_statue_arm_1k.jpg gothic_statue_diff_1k.jpg gothic_statue_nor_gl_1k.jpg hand_truck_arm_1k.jpg hand_truck_diff_1k.jpg hand_truck_nor_gl_1k.jpg handsaw_wood_arm_1k.jpg handsaw_wood_diff_1k.jpg handsaw_wood_nor_gl_1k.jpg hanging_picture_frame_01_arm_1k.jpg hanging_picture_frame_01_artwork_diff_1k.jpg hanging_picture_frame_01_artwork_nor_gl_1k.jpg hanging_picture_frame_01_artwork_roughness_1k.jpg hanging_picture_frame_01_diff_1k.jpg hanging_picture_frame_01_nor_gl_1k.jpg hanging_picture_frame_02_arm_1k.jpg hanging_picture_frame_02_artwork_diff_1k.jpg hanging_picture_frame_02_artwork_nor_gl_1k.jpg hanging_picture_frame_02_artwork_roughness_1k.jpg hanging_picture_frame_02_diff_1k.jpg hanging_picture_frame_02_nor_gl_1k.jpg hanging_picture_frame_03_arm_1k.jpg hanging_picture_frame_03_artwork_diff_1k.jpg hanging_picture_frame_03_artwork_nor_gl_1k.jpg hanging_picture_frame_03_artwork_rough_1k.jpg hanging_picture_frame_03_diff_1k.jpg hanging_picture_frame_03_nor_gl_1k.jpg hanging_picture_frame_03_rough_1k.jpg hatchet_arm_1k.jpg hatchet_diff_1k.jpg hatchet_nor_gl_1k.jpg horse_statue_01_arm_1k.jpg horse_statue_01_diff_1k.jpg horse_statue_01_nor_gl_1k.jpg industrial_caged_sconce_arm_1k.jpg industrial_caged_sconce_diff_1k.jpg industrial_caged_sconce_emissive_1k.jpg industrial_caged_sconce_nor_gl_1k.jpg jug_01_arm_1k.jpg jug_01_diff_1k.jpg jug_01_nor_gl_1k.jpg katana_stand_01_arm_1k.jpg katana_stand_01_diff_1k.jpg katana_stand_01_nor_gl_1k.jpg korean_fire_extinguisher_01_body_arm_1k.jpg korean_fire_extinguisher_01_body_diff_1k.jpg korean_fire_extinguisher_01_body_nor_gl_1k.jpg korean_fire_extinguisher_01_glass_arm_1k.jpg korean_fire_extinguisher_01_glass_diff_1k.jpg korean_fire_extinguisher_01_glass_nor_gl_1k.jpg korean_fire_extinguisher_01_paper_arm_1k.jpg korean_fire_extinguisher_01_paper_diff_1k.jpg korean_fire_extinguisher_01_paper_nor_gl_1k.jpg ladder_sectioned_01_arm_1k.jpg ladder_sectioned_01_diff_1k.jpg ladder_sectioned_01_nor_gl_1k.jpg lemon_arm_1k.jpg lemon_diff_1k.jpg lemon_nor_gl_1k.jpg lightbulb_01_arm_1k.jpg lightbulb_01_diff_1k.jpg lightbulb_01_emissive_1k.jpg lightbulb_01_nor_gl_1k.jpg long_life_food_arm_1k.jpg long_life_food_diff_1k.jpg long_life_food_nor_gl_1k.jpg machete_arm_1k.jpg machete_diff_1k.jpg machete_nor_gl_1k.jpg magnifying_glass_01_arm_1k.jpg magnifying_glass_01_diff_1k.jpg magnifying_glass_01_nor_gl_1k.jpg magnifying_glass_01_rough_1k.jpg mantel_clock_01_arm_1k.jpg mantel_clock_01_diff_1k.jpg mantel_clock_01_nor_gl_1k.jpg marble_bust_01_diff_1k.jpg marble_bust_01_nor_gl_1k.jpg marble_bust_01_rough_1k.jpg medical_box_arm_1k.jpg medical_box_diff_1k.jpg medical_box_nor_gl_1k.jpg medical_tape_arm_1k.jpg medical_tape_diff_1k.jpg medical_tape_nor_gl_1k.jpg metal_jerrycan_arm_1k.jpg metal_jerrycan_diff_1k.jpg metal_jerrycan_green_arm_1k.jpg metal_jerrycan_green_diff_1k.jpg metal_jerrycan_green_nor_gl_1k.jpg metal_jerrycan_nor_gl_1k.jpg metal_office_desk_arm_1k.jpg metal_office_desk_diff_1k.jpg metal_office_desk_nor_gl_1k.jpg metal_tool_chest_arm_1k.jpg metal_tool_chest_diff_1k.jpg metal_tool_chest_nor_gl_1k.jpg mid_century_lounge_chair_arm_1k.jpg mid_century_lounge_chair_diff_1k.jpg mid_century_lounge_chair_nor_gl_1k.jpg modern_arm_chair_01_legs_arm_1k.jpg modern_arm_chair_01_legs_diff_1k.jpg modern_arm_chair_01_legs_nor_gl_1k.jpg modern_arm_chair_01_pillow_arm_1k.jpg modern_arm_chair_01_pillow_diff_1k.jpg modern_arm_chair_01_pillow_nor_gl_1k.jpg mousetrap_arm_1k.jpg mousetrap_diff_1k.jpg mousetrap_nor_gl_1k.jpg multi_cleaner_bottle_arm_1k.jpg multi_cleaner_bottle_diff_1k.jpg multi_cleaner_bottle_nor_gl_1k.jpg nettle_plant_arm_1k.jpg nettle_plant_diff_1k.jpg nettle_plant_nor_gl_1k.jpg office_notepads_arm_1k.jpg office_notepads_diff_1k.jpg office_notepads_nor_gl_1k.jpg oil_tin_arm_1k.jpg oil_tin_diff_1k.jpg oil_tin_nor_gl_1k.jpg old_gas_mask_arm_1k.jpg old_gas_mask_diff_1k.jpg old_gas_mask_nor_gl_1k.jpg old_military_crate_arm_1k.jpg old_military_crate_diff_1k.jpg old_military_crate_nor_gl_1k.jpg old_tyre_arm_1k.jpg old_tyre_diff_1k.jpg old_tyre_nor_gl_1k.jpg ornate_medieval_dagger_arm_1k.jpg ornate_medieval_dagger_diff_1k.jpg painted_wooden_chair_01_arm_1k.jpg painted_wooden_chair_01_diff_1k.jpg painted_wooden_chair_01_nor_gl_1k.jpg painted_wooden_nightstand_arm_1k.jpg painted_wooden_nightstand_diff_1k.jpg painted_wooden_nightstand_nor_gl_1k.jpg painted_wooden_table_arm_1k.jpg painted_wooden_table_diff_1k.jpg painted_wooden_table_nor_gl_1k.jpg pastic_torch_6v_arm_1k.jpg pastic_torch_6v_diff_1k.jpg pastic_torch_6v_nor_gl_1k.jpg pipe_wrench_arm_1k.jpg pipe_wrench_diff_1k.jpg pipe_wrench_nor_gl_1k.jpg planter_box_01_arm_1k.jpg planter_box_01_diff_1k.jpg planter_box_01_nor_gl_1k.jpg planter_box_02_arm_1k.jpg planter_box_02_diff_1k.jpg planter_box_02_nor_gl_1k.jpg planter_box_03_arm_1k.jpg planter_box_03_diff_1k.jpg planter_box_03_nor_gl_1k.jpg plastic_bottle_gallon_arm_1k.jpg plastic_bottle_gallon_diff_1k.jpg plastic_bottle_gallon_nor_gl_1k.jpg plastic_container_arm_1k.jpg plastic_container_diff_1k.jpg plastic_container_nor_gl_1k.jpg plastic_crate_01_arm_1k.jpg plastic_crate_01_diff_1k.jpg plastic_crate_01_nor_gl_1k.jpg pliers_arm_1k.jpg pliers_diff_1k.jpg pliers_nor_gl_1k.jpg plunger_arm_1k.jpg plunger_diff_1k.jpg plunger_nor_gl_1k.jpg pocket_watch_arm_1k.jpg pocket_watch_diff_1k.jpg pocket_watch_glass_rough_1k.jpg pocket_watch_nor_gl_1k.jpg portable_cassette_player_arm_1k.jpg portable_cassette_player_diff_1k.jpg portable_cassette_player_nor_gl_1k.jpg pot_enamel_01_arm_1k.jpg pot_enamel_01_diff_1k.jpg pot_enamel_01_nor_gl_1k.jpg potted_plant_02_leaves_diff_1k.jpg potted_plant_02_leaves_nor_gl_1k.jpg potted_plant_02_leaves_rough_1k.jpg potted_plant_02_pot_diff_1k.jpg potted_plant_02_pot_nor_gl_1k.jpg potted_plant_02_pot_rough_1k.jpg potted_plant_04_arm_1k.jpg potted_plant_04_diff_1k.jpg potted_plant_04_nor_gl_1k.jpg propane_tank_arm_1k.jpg propane_tank_diff_1k.jpg propane_tank_nor_gl_1k.jpg round_spectacles_arm_1k.jpg round_spectacles_diff_1k.jpg round_spectacles_nor_gl_1k.jpg rubber_boots_arm_1k.jpg rubber_boots_diff_1k.jpg rubber_boots_dirty_arm_1k.jpg rubber_boots_dirty_diff_1k.jpg rubber_boots_dirty_nor_gl_1k.jpg rubber_boots_nor_gl_1k.jpg rubber_duck_toy_arm_1k.jpg rubber_duck_toy_diff_1k.jpg rubber_duck_toy_nor_gl_1k.jpg russian_food_cans_01_arm_1k.jpg russian_food_cans_01_diff_1k.jpg russian_food_cans_01_nor_gl_1k.jpg screwdrivers_02_arm_1k.jpg screwdrivers_02_diff_1k.jpg screwdrivers_02_nor_gl_1k.jpg seadogs_compass_arm_1k.jpg seadogs_compass_diff_1k.jpg seadogs_compass_nor_gl_1k.jpg side_table_01_arm_1k.jpg side_table_01_diff_1k.jpg side_table_01_nor_gl_1k.jpg signal_flashlight_arm_1k.jpg signal_flashlight_diff_1k.jpg signal_flashlight_nor_gl_1k.jpg small_oil_can_01_arm_1k.jpg small_oil_can_01_diff_1k.jpg small_oil_can_01_nor_gl_1k.jpg sofa_02_arm_1k.jpg sofa_02_diff_1k.jpg sofa_02_nor_gl_1k.jpg spray_paint_bottles_arm_1k.jpg spray_paint_bottles_diff_1k.jpg spray_paint_bottles_dirty_arm_1k.jpg spray_paint_bottles_dirty_diff_1k.jpg spray_paint_bottles_dirty_nor_gl_1k.jpg spray_paint_bottles_nor_gl_1k.jpg standing_picture_frame_01_arm_1k.jpg standing_picture_frame_01_artwork_diff_1k.jpg standing_picture_frame_01_artwork_nor_gl_1k.jpg standing_picture_frame_01_artwork_rough_1k.jpg standing_picture_frame_01_diff_1k.jpg standing_picture_frame_01_nor_gl_1k.jpg stationery_supplies_arm_1k.jpg stationery_supplies_diff_1k.jpg stationery_supplies_nor_gl_1k.jpg steel_frame_shelves_01_arm_1k.jpg steel_frame_shelves_01_diff_1k.jpg steel_frame_shelves_01_nor_gl_1k.jpg steel_frame_shelves_02_arm_1k.jpg steel_frame_shelves_02_diff_1k.jpg steel_frame_shelves_02_nor_gl_1k.jpg tea_set_01_arm_1k.jpg tea_set_01_diff_1k.jpg tea_set_01_nor_gl_1k.jpg television_02_arm_1k.jpg television_02_diff_1k.jpg television_02_nor_gl_1k.jpg throw_pillows_01_diff_1k.jpg throw_pillows_01_nor_gl_1k.jpg throw_pillows_01_rough_1k.jpg tool_cart_arm_1k.jpg tool_cart_diff_1k.jpg tool_cart_nor_gl_1k.jpg trashbag_arm_1k.jpg trashbag_diff_1k.jpg trashbag_nor_gl_1k.jpg treasure_chest_arm_1k.jpg treasure_chest_diff_1k.jpg treasure_chest_nor_gl_1k.jpg utility_box_01_arm_1k.jpg utility_box_01_diff_1k.jpg utility_box_01_nor_gl_1k.jpg vintage_binocular_arm_1k.jpg vintage_binocular_diff_1k.jpg vintage_binocular_nor_gl_1k.jpg vintage_crutches_01_arm_1k.jpg vintage_crutches_01_diff_1k.jpg vintage_crutches_01_nor_gl_1k.jpg vintage_day_bed_arm_1k.jpg vintage_day_bed_diff_1k.jpg vintage_day_bed_nor_gl_1k.jpg vintage_electric_kettle_arm_1k.jpg vintage_electric_kettle_diff_1k.jpg vintage_electric_kettle_nor_gl_1k.jpg vintage_flashlight_arm_1k.jpg vintage_flashlight_diff_1k.jpg vintage_flashlight_nor_gl_1k.jpg vintage_grandfather_clock_01_arm_1k.jpg vintage_grandfather_clock_01_diff_1k.jpg vintage_grandfather_clock_01_nor_gl_1k.jpg vintage_microscope_arm_1k.jpg vintage_microscope_diff_1k.jpg vintage_microscope_nor_gl_1k.jpg vintage_microwave_arm_1k.jpg vintage_microwave_diff_1k.jpg vintage_microwave_nor_gl_1k.jpg vintage_oil_lamp_arm_1k.jpg vintage_oil_lamp_diff_1k.jpg vintage_oil_lamp_flame_diff_1k.jpg vintage_oil_lamp_glass_arm_1k.jpg vintage_oil_lamp_glass_diff_1k.jpg vintage_oil_lamp_glass_nor_gl_1k.jpg vintage_oil_lamp_nor_gl_1k.jpg vintage_radio_transceiver_accessories_arm_1k.jpg vintage_radio_transceiver_accessories_diff_1k.jpg vintage_radio_transceiver_accessories_nor_gl_1k.jpg vintage_radio_transceiver_arm_1k.jpg vintage_radio_transceiver_diff_1k.jpg vintage_radio_transceiver_nor_gl_1k.jpg vintage_stapler_arm_1k.jpg vintage_stapler_diff_1k.jpg vintage_stapler_nor_gl_1k.jpg vintage_suitcase_01_arm_1k.jpg vintage_suitcase_01_diff_1k.jpg vintage_suitcase_01_nor_gl_1k.jpg vintage_suitcase_02_arm_1k.jpg vintage_suitcase_02_diff_1k.jpg vintage_suitcase_02_nor_gl_1k.jpg vintage_telephone_wall_clock_arm_1k.jpg vintage_telephone_wall_clock_diff_1k.jpg vintage_telephone_wall_clock_nor_gl_1k.jpg vintage_wooden_drawer_01_arm_1k.jpg vintage_wooden_drawer_01_diff_1k.jpg vintage_wooden_drawer_01_nor_gl_1k.jpg wall_clock_arm_1k.jpg wall_clock_diff_1k.jpg wall_clock_glass_arm_1k.jpg wall_clock_nor_gl_1k.jpg watering_can_metal_01_arm_1k.jpg watering_can_metal_01_diff_1k.jpg watering_can_metal_01_nor_gl_1k.jpg wicker_basket_01_arm_1k.jpg wicker_basket_01_diff_1k.jpg wicker_basket_01_nor_gl_1k.jpg wicker_basket_02_arm_1k.jpg wicker_basket_02_diff_1k.jpg wicker_basket_02_nor_gl_1k.jpg wine_bottles_01_arm_1k.jpg wine_bottles_01_diff_1k.jpg wine_bottles_01_label_clearwater_crystals_01_arm_1k.jpg wine_bottles_01_label_clearwater_crystals_01_diff_1k.jpg wine_bottles_01_label_ftero_vinea_01_arm_1k.jpg wine_bottles_01_label_ftero_vinea_01_diff_1k.jpg wine_bottles_01_label_ftero_vinea_02_arm_1k.jpg wine_bottles_01_label_ftero_vinea_02_diff_1k.jpg wine_bottles_01_label_intertwine_01_arm_1k.jpg wine_bottles_01_label_intertwine_01_diff_1k.jpg wine_bottles_01_nor_gl_1k.jpg wine_bottles_01_paper_nor_gl_1k.jpg wooden_bookshelf_worn_arm_1k.jpg wooden_bookshelf_worn_diff_1k.jpg wooden_bookshelf_worn_nor_gl_1k.jpg wooden_bowl_01_arm_1k.jpg wooden_bowl_01_diff_1k.jpg wooden_bowl_01_nor_gl_1k.jpg wooden_bucket_01_arm_1k.jpg wooden_bucket_01_diff_1k.jpg wooden_bucket_01_nor_gl_1k.jpg wooden_crate_01_arm_1k.jpg wooden_crate_01_diff_1k.jpg wooden_crate_01_nor_gl_1k.jpg wooden_crate_02_arm_1k.jpg wooden_crate_02_diff_1k.jpg wooden_crate_02_nor_gl_1k.jpg wooden_cutting_board_arm_1k.jpg wooden_cutting_board_diff_1k.jpg wooden_cutting_board_nor_gl_1k.jpg wooden_spoon_arm_1k.jpg wooden_spoon_diff_1k.jpg wooden_spoon_nor_gl_1k.jpg worn_metal_rack_arm_1k.jpg worn_metal_rack_diff_1k.jpg worn_metal_rack_nor_gl_1k.jpg yellow_onion_arm_1k.jpg yellow_onion_diff_1k.jpg yellow_onion_nor_gl_1k.jpg'.split(' '));
+const TEX_SUB = {
+  'Ottoman_01_nor_gl_1k.jpg': 'Armchair_01_nor_gl_1k.jpg',
+  'Ottoman_01_diff_1k.jpg': 'Armchair_01_diff_1k.jpg',
+  'Ottoman_01_arm_1k.jpg': 'Armchair_01_arm_1k.jpg',
+  'ornate_medieval_dagger_nor_gl_1k.jpg': 'cross_pein_hammer_nor_gl_1k.jpg',
+  'ornate_medieval_mace_nor_gl_1k.jpg': 'cross_pein_hammer_nor_gl_1k.jpg',
+  'ornate_medieval_mace_diff_1k.jpg': 'cross_pein_hammer_diff_1k.jpg',
+  'ornate_medieval_mace_arm_1k.jpg': 'cross_pein_hammer_arm_1k.jpg',
+  'ornate_war_hammer_nor_gl_1k.jpg': 'cross_pein_hammer_nor_gl_1k.jpg',
+  'ornate_war_hammer_diff_1k.jpg': 'cross_pein_hammer_diff_1k.jpg',
+  'ornate_war_hammer_arm_1k.jpg': 'cross_pein_hammer_arm_1k.jpg',
+  'ornate_mirror_01_nor_gl_1k.jpg': 'fancy_picture_frame_01_nor_gl_1k.jpg',
+  'ornate_mirror_01_diff_1k.jpg': 'fancy_picture_frame_01_diff_1k.jpg',
+  'ornate_mirror_01_arm_1k.jpg': 'WoodenTable_01_arm_1k.jpg',
+  'painted_wooden_bench_nor_gl_1k.jpg': 'WoodenTable_01_nor_gl_1k.jpg',
+  'painted_wooden_bench_diff_1k.jpg': 'WoodenTable_01_diff_1k.jpg',
+  'painted_wooden_bench_arm_1k.jpg': 'WoodenTable_01_arm_1k.jpg',
+  'painted_wooden_cabinet_02_nor_gl_1k.jpg': 'painted_wooden_nightstand_nor_gl_1k.jpg',
+  'painted_wooden_cabinet_02_diff_1k.jpg': 'painted_wooden_nightstand_diff_1k.jpg',
+  'painted_wooden_cabinet_02_arm_1k.jpg': 'painted_wooden_nightstand_arm_1k.jpg'
+};
 _phMgr.setURLModifier(u => {
   const f = u.split('/').pop();
   if (_phFiles[f]) return _phFiles[f];
   if (/textures/i.test(u)) {
+    if (REPO_TEX.has(f)) return u;                                  // справжня текстура з repo
+    if (TEX_SUB[f]) return 'models/textures/' + TEX_SUB[f];         // схожа наявна
     if (/arm|orm|rough|metal/i.test(f)) return _neutralTexURI(255, 128, 0);
     if (/nor|nrm|normal/i.test(f)) return _neutralTexURI(128, 128, 255);
     if (/emis|glow/i.test(f)) return _neutralTexURI(0, 0, 0);
-    return _genTexURI(f);
+    return _genTexURI(f);                                           // останній рубіж — генерація
   }
   return u;
 });
@@ -5453,6 +5488,10 @@ if (IS_TOUCH) {
   const JR = 56;
   const opts = { passive: false };
   const isBtn = t => t && t.closest && t.closest('.tbtn');
+  /* тап всередині вікна — це НЕ свайп огляду і НЕ джойстик: глобальний обробник
+     пропускає його, і рідні click-події кнопок вікна (ЗАКРИТИ ВІКНО, використати
+     предмет, крафт, ✕) нарешті спрацьовують на мобільному */
+  const isUI = t => t && t.closest && t.closest('#survBp,#journal,#survExam,#inspect,#introCine,#ph_window,#cassette,#title,#msg,#prompt,#panelSys,#dlgAct23,#finWin,#deathCard');
 
   function joyStart(id, x, y) {
     joyId = id; joyCX = x; joyCY = y;
@@ -5477,7 +5516,7 @@ if (IS_TOUCH) {
   addEventListener('touchstart', e => {
     if (!started) return;                   // тап по титулці стартує гру
     for (const t of e.changedTouches) {
-      if (isBtn(t.target)) continue;
+      if (isBtn(t.target) || isUI(t.target)) continue;
       e.preventDefault();
       if (joyId === null && t.clientX < innerWidth * 0.45 && t.clientY > innerHeight * 0.3) {
         joyStart(t.identifier, t.clientX, t.clientY);
@@ -6239,9 +6278,15 @@ setInterval(drawGrain, 90);
     T.forEach(clearTimeout);
     ic.classList.add('off');
     setTimeout(() => ic.remove(), 1400);
-    if (!URLP.get('shot')) titleEl0.style.display = 'flex';
+    if (!URLP.get('shot')) {
+      titleEl0.style.display = 'flex';
+      /* титулка активується через паузу: випадковий другий тап по заставці
+         більше не прогрижує гру мимо інтро «Харків, кв. №8...» */
+      window.__titleArmed = false;
+      setTimeout(() => { window.__titleArmed = true; }, 1300);
+    }
   }
-  ic.addEventListener('click', fin);
+  ic.addEventListener('click', e => { e.stopPropagation(); fin(); });
 })();
 
 /* ---------- ТИТУЛЬНИЙ ЕКРАН ---------- */
@@ -6254,7 +6299,7 @@ function startGame() { window.__sfxInit && __sfxInit();
   titleEl.style.display = 'none';
   if (!IS_TOUCH && !URLP.get('shot') && !URLP.get('view')) renderer.domElement.requestPointerLock();
 }
-titleEl.addEventListener('click', startGame);
+titleEl.addEventListener('click', e => { if (window.__titleArmed === false) return; e.stopPropagation(); startGame(); });
 if (URLP.get('shot')) { started = true; titleEl.style.display = 'none'; }
 
 /* ---------- ГОЛОВНИЙ ЦИКЛ ---------- */
@@ -6564,7 +6609,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   const _origStart = startGame;
   startGame = function() { _origStart(); if (window.__vv13save) { restore(window.__vv13save); window.__vv13save = null; } if (!startTime) startTime = Date.now(); objHud.style.display = 'block'; renderObj(); };
   titleEl.removeEventListener('click', _origStart);
-  titleEl.addEventListener('click', () => startGame());
+  titleEl.addEventListener('click', () => { if (window.__titleArmed === false) return; startGame(); });
 
   /* ---------- ЩОДЕННИК ---------- */
   function renderJournal() {
@@ -7735,6 +7780,69 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     }
   }
 
+  /* ---------- УДАР МЕБЛЯМИ: реєстр + відкидання (розв'язує завалені двері) ---------- */
+  window.__tripRegGet = () => { if (!REG) buildReg(); return REG || []; };
+  const kickAnims = [];
+  window.__tripKick = function(it) {
+    if (!it || !it.g || !it.g.parent) return false;
+    const g = it.g;
+    const dx = g.position.x - P.x, dz = g.position.z - P.z;
+    const d = Math.hypot(dx, dz) || 1;
+    const dist = (0.8 + Math.random() * 0.5) * S;
+    let nx = clamp(g.position.x + (dx / d) * dist, 0.45 * S, 18.55 * S);
+    let nz = clamp(g.position.z + (dz / d) * dist, -1.7 * S, 18.15 * S);
+    /* вперся у межі (стіна) — зсув вздовж осі, щоб удар не «ковтався» впритул */
+    if (Math.abs(nx - g.position.x) + Math.abs(nz - g.position.z) < 0.3 * S) {
+      const cx = 9 * S - g.position.x, cz = 8 * S - g.position.z, cd = Math.hypot(cx, cz) || 1;
+      const alts = [[dx / d * dist, 0], [0, dz / d * dist], [-dz / d * dist, dx / d * dist], [dz / d * dist, -dx / d * dist], [cx / cd * dist, cz / cd * dist]];
+      for (const a of alts) {
+        const ax = clamp(g.position.x + a[0], 0.45 * S, 18.55 * S);
+        const az = clamp(g.position.z + a[1], -1.7 * S, 18.15 * S);
+        if (Math.abs(ax - g.position.x) + Math.abs(az - g.position.z) > 0.3 * S) { nx = ax; nz = az; break; }
+      }
+    }
+    kickAnims.push({ g, x0: g.position.x, z0: g.position.z, x1: nx, z1: nz, ry0: g.rotation.y, ry1: g.rotation.y + (Math.random() - 0.5) * 0.55, t0: performance.now(), dur: 330 });
+    sfx('door_slam', 0.3, 1.12);
+    if (typeof shake === 'function') shake(0.35);
+    if (T.blocking && it.i === T.blocking.ri) {
+      const dd = doors.find(x => x.name === T.blocking.door);
+      if (dd) dd.__tripBlocked = false;
+      T.blocking = null;
+      setTimeout(() => msg('ЗАВАЛУ ВІДКИНУТО. Двері звільнились — можна йти далі.', 4200), 380);
+    }
+    (function tk() {
+      const t = performance.now();
+      let fin = false;
+      for (let i = kickAnims.length - 1; i >= 0; i--) {
+        const a = kickAnims[i];
+        const k = Math.min(1, (t - a.t0) / a.dur);
+        const e = k * k * (3 - 2 * k);
+        a.g.position.x = a.x0 + (a.x1 - a.x0) * e;
+        a.g.position.z = a.z0 + (a.z1 - a.z0) * e;
+        a.g.rotation.y = a.ry0 + (a.ry1 - a.ry0) * e;
+        if (k >= 1) { kickAnims.splice(i, 1); fin = true; }
+      }
+      if (fin || !kickAnims.length) computeFurnCols();
+      if (kickAnims.length) requestAnimationFrame(tk);
+    })();
+    return true;
+  };
+
+  /* ---------- ВУЛИЦЯ: кнопка «УВІЙТИ НАЗАД» — повернення у будь-яку мить ---------- */
+  let bBack = null;
+  function backBtn(show) {
+    if (show && !bBack) {
+      bBack = document.createElement('div');
+      bBack.className = 'tbtn'; bBack.id = 'bBack'; bBack.textContent = 'УВІЙТИ НАЗАД';
+      bBack.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);min-width:130px;height:32px;z-index:66;background:rgba(60,40,16,.6);border:1px solid #d8a03c;color:#ffd98a;border-radius:8px;font:bold 10px monospace;letter-spacing:.12em;display:flex;align-items:center;justify-content:center;';
+      const goBack = () => { if (T.active && T.type === 4) { endVoid(false); T.tEnd = gameMin; } };
+      bBack.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); goBack(); }, { passive: false });
+      bBack.addEventListener('click', goBack);
+      document.body.appendChild(bBack);
+    }
+    if (bBack) bBack.style.display = show ? 'flex' : 'none';
+  }
+
   /* ---------- старт / кінець тріпу ---------- */
   let ghostTimer = 0, voidMsgT = 0, voidReturn = null;
   function start(type) {
@@ -7758,6 +7866,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
       window.__tripVoid = true;
       P.x = 21.5 * S; P.z = 8.5 * S; P.yaw = -Math.PI / 2; P.pitch = 0.03; P.speed = 0;
       voidMsgT = 22;
+      backBtn(true);
     }
     if (type !== 2 && Math.random() < 0.25) spawnGrass(8 + ((Math.random() * 8) | 0), true);
     if (type === 5) { startMoves(2, null); }
@@ -7791,6 +7900,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     window.__autosave && window.__autosave();
   }
   function endVoid(auto) {
+    backBtn(false);
     window.__tripVoid = false;
     const keys = Object.keys(ROOMRECT);
     const k = keys[(Math.random() * keys.length) | 0];
@@ -8370,6 +8480,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     setTimeout(() => {
       started = false; nullG.visible = false; NS.active = false;
       const card = document.createElement('div');
+      card.id = 'deathCard';
       card.style.cssText = 'position:fixed;inset:0;z-index:97;background:#050203;color:#cfc2a6;display:flex;align-items:center;justify-content:center;text-align:center;font:13px/1.9 monospace;';
       card.innerHTML = '<div style="max-width:min(90vw,600px);padding:30px">' +
         '<h2 style="color:#ff5a3c;letter-spacing:.3em;font-size:18px;margin:0 0 14px">ДЕНЬ 41 ПОВТОРЮЄТЬСЯ</h2>' +
@@ -8395,13 +8506,33 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   window.__combat = () => ({ cd: CB.cd, swing: CB.swing, st: CB.stamina });
   function swing() {
     if (CB.cd > 0 || dead) return;
-    if (CB.stamina < 18) { msg('Рука не слухається — немає сил. [СИЛИ]', 2200); return; }
+    const apt = !((window.__worldIdx && window.__worldIdx()) | 0);
+    const need = apt ? 8 : 18;                       /* у квартирі удар дешевший — це інструмент, не бій */
+    if (CB.stamina < need) { msg('Рука не слухається — немає сил. [СИЛИ]', 2200); return; }
     CB.cd = 0.62; CB.swing = 0.32;
-    CB.stamina = Math.max(0, CB.stamina - 18);
+    CB.stamina = Math.max(0, CB.stamina - need);
     sfx('flash_click', 0.3, 0.7);
     window.__nullNoise(3);
     setTimeout(() => {
-      if (!(window.__worldIdx && window.__worldIdx() > 0)) return;
+      if (!(window.__worldIdx && window.__worldIdx() > 0)) {
+        /* УДАР У КВАРТИРІ: відкидає меблі/річ, що заважає пройти («удар — відкидуємо») */
+        const reg = (window.__tripRegGet && window.__tripRegGet()) || [];
+        camera.getWorldDirection(_v1);
+        let best = null, bd = 1e9;
+        for (const it of reg) {
+          const g = it.g;
+          if (!g || !g.parent) continue;
+          const dx = g.position.x - P.x, dz = g.position.z - P.z;
+          const d = Math.hypot(dx, dz);
+          if (d < 0.2 || d > 2.4 * S) continue;
+          _v2.set(dx, 0, dz).normalize();
+          if (_v1.dot(_v2) < 0.45) continue;
+          if (d < bd) { bd = d; best = it; }
+        }
+        if (best && window.__tripKick && window.__tripKick(best)) return;
+        burst(0.14, 140, 0.3, 'lowpass');
+        return;
+      }
       const d = Math.hypot(NS.x * WSX - P.x, NS.z * WSX - P.z);
       camera.getWorldDirection(_v1);
       _v2.set(NS.x * WSX - P.x, 0, NS.z * WSX - P.z).normalize();
@@ -8778,6 +8909,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
   window.__diaStep = () => diaStep;
   window.__diaStepSet = n => { diaStep = n; };
   const dlg = document.createElement('div');
+  dlg.id = 'dlgAct23';
   dlg.style.cssText = 'display:none;position:fixed;inset:0;z-index:78;background:rgba(2,3,4,.9);align-items:center;justify-content:center;';
   dlg.innerHTML = '<div style="max-width:min(92vw,640px);background:#0b0e10;border:1px solid #2c4a56;padding:24px 28px;color:#bcd2da;font:13px/1.7 monospace">' +
     '<div id="dlgQ" style="margin-bottom:16px"></div><div id="dlgA"></div>' +
@@ -8822,6 +8954,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 
   /* ПУЛЬТ: фінали */
   const fin = document.createElement('div');
+  fin.id = 'finWin';
   fin.style.cssText = 'display:none;position:fixed;inset:0;z-index:80;background:rgba(1,2,2,.94);align-items:center;justify-content:center;';
   document.body.appendChild(fin);
   window.__showFinale = function() {
@@ -9037,6 +9170,7 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 
   /* ---------- ПАНЕЛЬ: НАЛАШТУВАННЯ + СЕЙВИ + ДОСЯГНЕННЯ ---------- */
   const panel = document.createElement('div');
+  panel.id = 'panelSys';
   panel.style.cssText = 'display:none;position:fixed;inset:0;z-index:88;background:rgba(2,2,3,.9);align-items:center;justify-content:center;';
   document.body.appendChild(panel);
   const row = (label, ctrl) => '<div style="display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px dashed rgba(141,136,120,.2)"><span style="width:190px;color:#8d8878;font-size:11px;letter-spacing:.12em">' + label + '</span>' + ctrl + '</div>';
@@ -9274,6 +9408,131 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
 })();
 
 
+/* ======================================================================
+   ГЕНЕРАТИВНИЙ ЗВУКОВИЙ ШАР: неповторювані випадкові події довкола.
+   Кожен звук синтезується з рандомних параметрів (тон, фільтр, панорама,
+   ритм, кількість імпульсів) — жоден не звучить двічі однаково.
+   Щільність залежить від страху, світу і тріпу. Реальні записи Freesound
+   лишаються основою атмосфери — цей шар лише доповнює їх «живим» будинком.
+   ====================================================================== */
+(function() {
+  if (window.__vv13GenSnd) return; window.__vv13GenSnd = true;
+  let last = -1, tNext = 4 + ((Math.random() * 5) | 0);
+  const R = Math.random;
+  function pan(node, x) {
+    if (AC.createStereoPanner) { const p = AC.createStereoPanner(); p.pan.value = x; node.connect(p); p.connect(master); }
+    else node.connect(master);
+  }
+  function env(g, v, a, d) {
+    const t = AC.currentTime;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, v), t + a);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+  }
+  const gen = [
+    function creak() {                       /* скрип підлоги / меблів */
+      const o = AC.createOscillator(); o.type = 'sawtooth';
+      const f0 = 55 + R() * 50; o.frequency.setValueAtTime(f0, AC.currentTime);
+      o.frequency.linearRampToValueAtTime(f0 * (0.7 + R() * 0.5), AC.currentTime + 0.5 + R());
+      const fl = AC.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = 320 + R() * 380; fl.Q.value = 6;
+      const g = AC.createGain(); env(g, 0.035 + R() * 0.03, 0.12, 0.7 + R() * 0.8);
+      const lfo = AC.createOscillator(); lfo.frequency.value = 5 + R() * 7;
+      const lg = AC.createGain(); lg.gain.value = 0.4 + R() * 0.5;
+      lfo.connect(lg); lg.connect(g.gain);
+      o.connect(fl); fl.connect(g); pan(g, R() * 1.6 - 0.8);
+      o.start(); lfo.start(); o.stop(AC.currentTime + 1.9); lfo.stop(AC.currentTime + 1.9);
+    },
+    function knock() {                       /* далекі удари у стіну */
+      const n = 2 + ((R() * 3) | 0);
+      for (let i = 0; i < n; i++) setTimeout(() => {
+        if (!AC || AC.state !== 'running') return;
+        burst(0.16 + R() * 0.1, 130 + R() * 130, 0.05 + R() * 0.045, 'lowpass');
+      }, i * (140 + R() * 320));
+    },
+    function clank() {                       /* металевий дзвін труби/батареї */
+      const n = 2 + ((R() * 2) | 0), base = 480 + R() * 900;
+      for (let i = 0; i < n; i++) {
+        const o = AC.createOscillator(); o.type = 'sine';
+        o.frequency.value = base * (1 + i * (0.13 + R() * 0.2));
+        const g = AC.createGain(); env(g, (0.028 + R() * 0.02) / (i + 1), 0.008, 0.5 + R() * 0.7);
+        o.connect(g); pan(g, R() * 1.6 - 0.8);
+        o.start(); o.stop(AC.currentTime + 1.4);
+      }
+    },
+    function wind() {                        /* шепіт протягу */
+      const dur = 1.8 + R() * 2.2;
+      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
+      const dd = buf.getChannelData(0);
+      for (let i = 0; i < dd.length; i++) dd[i] = (R() * 2 - 1) * Math.sin(Math.PI * i / dd.length);
+      const s = AC.createBufferSource(); s.buffer = buf;
+      const f = AC.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 2.2;
+      f.frequency.setValueAtTime(300 + R() * 200, AC.currentTime);
+      f.frequency.linearRampToValueAtTime(700 + R() * 500, AC.currentTime + dur * 0.6);
+      f.frequency.linearRampToValueAtTime(280 + R() * 160, AC.currentTime + dur);
+      const g = AC.createGain(); g.gain.value = 0.03 + R() * 0.03;
+      s.connect(f); f.connect(g); pan(g, R() * 1.4 - 0.7);
+      s.start();
+    },
+    function stutter() {                     /* електрика: заїкання лампи */
+      const n = 4 + ((R() * 6) | 0);
+      for (let i = 0; i < n; i++) setTimeout(() => {
+        if (!AC || AC.state !== 'running') return;
+        tone(85 + R() * 90, 60 + R() * 60, 0.05 + R() * 0.06, 0.03, 'square');
+      }, i * (45 + R() * 110));
+    },
+    function drip() {                        /* краплі з труби */
+      const n = 1 + ((R() * 3) | 0);
+      for (let i = 0; i < n; i++) setTimeout(() => {
+        if (!AC || AC.state !== 'running') return;
+        tone(900 + R() * 800, 260 + R() * 140, 0.1, 0.035, 'sine');
+      }, i * (220 + R() * 500));
+    },
+    function rumble() {                      /* низький гул стін */
+      const dur = 2.5 + R() * 2.5;
+      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
+      const dd = buf.getChannelData(0);
+      let v = 0;
+      for (let i = 0; i < dd.length; i++) { v = v * 0.985 + (R() * 2 - 1) * 0.15; dd[i] = v; }
+      const s = AC.createBufferSource(); s.buffer = buf;
+      const f = AC.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 55 + R() * 45;
+      const g = AC.createGain(); env(g, 0.05 + R() * 0.045, 0.9, dur - 1);
+      s.connect(f); f.connect(g); g.connect(master);
+      s.start();
+    },
+    function murmur() {                      /* «голос» — формантний шум за стіною */
+      const dur = 0.8 + R() * 1.1;
+      const buf = AC.createBuffer(1, Math.max(1, AC.sampleRate * dur | 0), AC.sampleRate);
+      const dd = buf.getChannelData(0);
+      for (let i = 0; i < dd.length; i++) dd[i] = (R() * 2 - 1) * Math.sin(Math.PI * i / dd.length);
+      const s = AC.createBufferSource(); s.buffer = buf;
+      const f = AC.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 7;
+      f.frequency.setValueAtTime(700 + R() * 500, AC.currentTime);
+      f.frequency.linearRampToValueAtTime(1200 + R() * 700, AC.currentTime + dur);
+      const g = AC.createGain(); g.gain.value = 0.022 + R() * 0.02;
+      s.connect(f); f.connect(g); pan(g, R() * 1.6 - 0.8);
+      s.start();
+    }
+  ];
+  setInterval(() => {
+    if (!AC || muted || AC.state !== 'running') return;
+    if (!started || dead) return;
+    if (--tNext > 0) return;
+    let fr = 20;
+    try { const st = window.__survState && window.__survState(); if (st) fr = st.fr; } catch (e) {}
+    const wi = (window.__worldIdx && window.__worldIdx()) | 0;
+    let wait = 16 + R() * 26;                                /* спокій: раз на ~16-42 с */
+    if (fr > 55) wait *= 0.55;                               /* страх — частіше */
+    if (fr > 85) wait *= 0.5;
+    if (wi > 0) wait *= 0.7;                                 /* нові світи — частіше */
+    try { if (window.__tripState && window.__tripState().active) wait *= 0.6; } catch (e) {}
+    tNext = Math.max(2, Math.round(wait / 2));               /* тік інтервалу = 2 с */
+    let i = (R() * gen.length) | 0;
+    if (i === last) i = (i + 1 + ((R() * (gen.length - 1)) | 0)) % gen.length;
+    last = i;
+    try { gen[i](); } catch (e) {}
+  }, 2000);
+})();
+
 /* ---------- ✕ ЗАКРИТИ на всіх вікнах (рюкзак / огляд / щоденник / система) ---------- */
 (function() {
   const st = 'position:absolute;top:10px;right:12px;z-index:9;background:rgba(163,44,34,.5);border:1px solid #d8a03c;color:#ffd98a;font:bold 11px monospace;letter-spacing:.14em;padding:8px 14px;border-radius:8px;cursor:pointer;-webkit-user-select:none;user-select:none;';
@@ -9286,7 +9545,8 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     box.__xBtn = 1;
     if (getComputedStyle(box).position === 'static') box.style.position = 'relative';
     const b = document.createElement('div');
-    b.textContent = '\u2715 ЗАКРИТИ'; b.style.cssText = st;
+    b.className = 'uxX';
+    b.textContent = '✕ ЗАКРИТИ'; b.style.cssText = st;
     bindX(b, fn); box.appendChild(b);
   }
   const key = c => () => window.dispatchEvent(new KeyboardEvent('keydown', { code: c }));
@@ -9296,11 +9556,13 @@ if(f.w)localStorage.setItem('vv13w',JSON.stringify(f.w));localStorage.removeItem
     if (window.__examOff) { const ex = document.getElementById('survExam'); if (ex) addX(ex, () => window.__examOff()); }  // огляд предмета
     const jr = document.getElementById('journal');
     if (jr) addX(jr, key('KeyJ'));                       // щоденник
+    if (window.__inspectClose) { const ins = document.getElementById('inspect'); if (ins) addX(ins, () => window.__inspectClose()); }  // огляд 3D (створюється ліниво)
     document.querySelectorAll('div').forEach(d => {      // панель систем
       if (d.style && d.style.zIndex === '88') addX(d, key('Escape'));
     });
   }
-  setTimeout(arm, 400); setTimeout(arm, 1500); setTimeout(arm, 4000);   // панель/огляд створюються динамічно
+  setTimeout(arm, 400); setTimeout(arm, 1500); setTimeout(arm, 4000);
+  setInterval(arm, 3000);   // вікна створюються динамічно — армимо постійно
 })();
 
 </script>

@@ -2,168 +2,256 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000000">
-<title>VV13.ROOM15 — ПОВНА ГРА: Акти I-III | PS1-Style Horror</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>VV13.ROOM15 — 15 КВАРТИР. 15 СВІТІВ. ОДНЕ ЗЛО.</title>
 <style>
-  :root { --amber:#ff9d3c; --blood:#b0402f; --paper:#cfc2a6; --dim:#8a7f68; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { background:#050505; color:var(--paper); font-family:"Courier New", monospace; }
-  body { min-height:100vh; overflow-x:hidden; }
-  .scan { position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.5;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,.25) 0 2px, transparent 2px 4px); }
-  .vig { position:fixed; inset:0; pointer-events:none; z-index:49;
-    background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.75) 100%); }
-  header { text-align:center; padding:clamp(40px, 8vw, 90px) 16px 10px; position:relative; }
-  h1 { font-size:clamp(2rem, 8vw, 4.2rem); letter-spacing:.08em; color:#d8d2c2; font-weight:bold; }
-  h1 b { color:var(--blood); }
-  .slogan { color:var(--dim); letter-spacing:.35em; font-size:clamp(.6rem, 1.8vw, .85rem); margin-top:10px; }
-  .part { color:var(--amber); letter-spacing:.28em; font-size:clamp(.75rem, 2.4vw, 1rem); margin-top:22px;
-    animation:blink 1.8s infinite; }
-  @keyframes blink { 0%,100% {opacity:1} 50% {opacity:.35} }
-  main { max-width:860px; margin:0 auto; padding:0 clamp(14px, 4vw, 24px) 80px; }
-  .story { background:rgba(12,10,7,.8); border:1px solid #3a3021; padding:clamp(16px, 3vw, 28px);
-    font-size:clamp(.82rem, 2.6vw, .95rem); line-height:1.75; margin-top:30px; }
-  .story b { color:var(--amber); }
-  .story p + p { margin-top:12px; }
-  h2 { color:var(--amber); letter-spacing:.22em; font-size:clamp(.95rem, 3vw, 1.1rem);
-    margin:44px 0 14px; border-bottom:1px dashed #3a3021; padding-bottom:8px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:12px; }
-  .card { border:1px solid #2e2718; padding:14px 16px; background:rgba(10,8,6,.6); font-size:.82rem; line-height:1.6; }
-  .card b { color:#e8d9b8; display:block; margin-bottom:5px; letter-spacing:.1em; }
-  table { width:100%; border-collapse:collapse; font-size:clamp(.75rem, 2.4vw, .85rem); }
-  td { border-top:1px dashed #2e2718; padding:8px 6px; vertical-align:top; }
-  td.k { color:var(--amber); white-space:nowrap; width:1%; letter-spacing:.08em; }
-  .playwrap { text-align:center; margin-top:40px; }
-  .playbtn { display:inline-block; border:1px solid #57431f; color:var(--paper); cursor:pointer;
-    background:rgba(20,14,8,.6); padding:clamp(14px, 3vw, 20px) clamp(34px, 8vw, 64px);
-    font:bold clamp(.9rem, 3vw, 1.15rem) "Courier New", monospace; letter-spacing:.3em; transition:all .2s; }
-  .playbtn:hover { color:var(--amber); border-color:var(--amber); background:#2a1c10; box-shadow:0 0 24px rgba(255,157,60,.15); }
-  .note { color:var(--dim); font-size:.72rem; letter-spacing:.12em; margin-top:14px; line-height:1.7; }
-  footer { text-align:center; color:#5c5342; font-size:.72rem; letter-spacing:.2em; padding:26px 14px 40px; line-height:1.8; }
-  /* --- ігровий режим --- */
-  #stage { position:fixed; inset:0; z-index:100; background:#000; display:none; }
-  #stage.on { display:block; }
-  #stage iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-  #quit { position:fixed; top:10px; right:12px; z-index:102; display:none;
-    background:rgba(8,7,5,.7); border:1px solid #57431f; color:var(--paper); cursor:pointer;
-    padding:8px 16px; font:bold .72rem "Courier New", monospace; letter-spacing:.2em; }
-  #quit:hover { color:var(--amber); }
-  #stage.on ~ #quit, #quit.on { display:block; }
-  /* ГРАТИ — завжди вгорі */
-  .topbar { position:fixed; top:0; left:0; right:0; z-index:48; display:flex; justify-content:flex-end;
-    padding:10px 14px; background:linear-gradient(rgba(5,5,5,.92), rgba(5,5,5,0)); pointer-events:none; }
-  .topbtn { pointer-events:auto; border:1px solid #57431f; color:var(--paper); cursor:pointer;
-    background:rgba(20,14,8,.85); padding:10px 26px; font:bold clamp(.75rem, 2.6vw, .95rem) "Courier New", monospace;
-    letter-spacing:.25em; transition:all .2s; animation:blink 2.4s infinite; }
-  .topbtn:hover { color:var(--amber); border-color:var(--amber); box-shadow:0 0 18px rgba(255,157,60,.2); }
-  @media (max-width:640px) { .scan { opacity:.35; } }
+  :root {
+    --bg: #07070d;
+    --bg2: #0b0b14;
+    --ink: #c9c2b2;
+    --dim: #7d7466;
+    --red: #a32c22;
+    --amber: #ff9d3c;
+    --green: #7ec96a;
+    --pink: #ff4fa3;
+    --line: rgba(190,195,205,.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: monospace; }
+  body { background-image: linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px); background-size: 44px 44px; }
+  a { color: var(--amber); }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 18px 60px; }
+
+  /* ---------- верх ---------- */
+  .topbar { position: sticky; top: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(7,7,13,.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(4px); }
+  .topbar .t { font-size: 12px; letter-spacing: .22em; color: var(--dim); }
+  .topbar .t b { color: var(--ink); }
+  .topbtn { cursor: pointer; font-size: 11px; letter-spacing: .18em; border: 1px solid rgba(190,195,205,.25); padding: 7px 14px; color: var(--ink); user-select: none; }
+  .topbtn:hover { background: rgba(163,44,34,.3); border-color: var(--red); }
+
+  header.hero { text-align: center; padding: 44px 0 26px; }
+  .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .tag { font-size: 10px; letter-spacing: .22em; border: 1px solid var(--line); padding: 4px 10px; color: var(--dim); }
+  .tag.hot { color: var(--amber); border-color: rgba(255,157,60,.4); }
+  h1.logo { margin: 0; font-size: clamp(34px, 9vw, 74px); letter-spacing: .14em; color: #e6ddc8; text-shadow: 0 0 26px rgba(163,44,34,.35); }
+  h1.logo b { color: var(--red); }
+  .slogan { margin-top: 14px; font-size: clamp(11px, 2.6vw, 15px); letter-spacing: .38em; color: var(--dim); }
+  .art { max-width: 720px; margin: 26px auto 0; font-size: 13px; line-height: 1.85; color: var(--ink); opacity: .92; text-align: left; }
+  .art i { color: var(--amber); font-style: normal; }
+  .art .d { opacity: .65; }
+
+  /* ---------- консоль ---------- */
+  .console { margin: 34px auto 0; max-width: 900px; border: 1px solid #23232f; border-radius: 18px; background: linear-gradient(180deg, #101018, #0a0a10); padding: 16px 18px 18px; box-shadow: 0 24px 70px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05); }
+  .console-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .console-head .model { font-size: 11px; letter-spacing: .3em; color: var(--dim); }
+  .console-head .model b { color: var(--ink); }
+  .console-head .leds { display: flex; gap: 10px; align-items: center; font-size: 9px; letter-spacing: .18em; color: var(--dim); }
+  .led { width: 8px; height: 8px; border-radius: 50%; background: #23232b; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  .led.on { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .screen { position: relative; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid #1c1c26; aspect-ratio: 16 / 9; }
+  .screen::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 4px); mix-blend-mode: overlay; opacity: var(--crt, .5); }
+  .screen .vign { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.5) 100%); }
+  #stage { position: fixed; inset: 0; z-index: 50; background: #000; display: none; }
+  #stage.on { display: block; }
+  #gframe { width: 100%; height: 100%; border: 0; background: #000; }
+  .screen .poster { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 2px, transparent 2px 4px), #050508; }
+  .screen .poster .p1 { font-size: clamp(18px, 4.6vw, 34px); letter-spacing: .18em; color: #e6ddc8; }
+  .screen .poster .p1 b { color: var(--red); }
+  .screen .poster .p2 { font-size: 10px; letter-spacing: .3em; color: #5e584c; }
+  .screen .poster .menu { margin-top: 10px; font-size: 12px; letter-spacing: .16em; color: #9a917f; line-height: 2.1; text-align: center; }
+  .screen .poster .menu b { color: var(--amber); }
+  .screen.off .poster { display: flex; }
+  .console-foot { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+  .playbtn { cursor: pointer; user-select: none; font-size: 15px; letter-spacing: .3em; padding: 15px 40px; color: #ffd98a; background: rgba(163,44,34,.35); border: 1px solid var(--red); text-align: center; }
+  .playbtn:hover { background: rgba(163,44,34,.6); box-shadow: 0 0 24px rgba(163,44,34,.5); }
+  .quitbtn { cursor: pointer; user-select: none; font-size: 11px; letter-spacing: .18em; padding: 10px 18px; color: var(--dim); border: 1px solid var(--line); display: none; }
+  .quitbtn.on { display: block; }
+  .quitbtn:hover { color: var(--ink); }
+  .crt { display: flex; gap: 12px; align-items: center; font-size: 10px; letter-spacing: .16em; color: var(--dim); }
+  .crt input[type=range] { accent-color: var(--amber); width: 120px; }
+  .fsbtn { cursor: pointer; border: 1px solid var(--line); padding: 6px 10px; user-select: none; }
+  .fsbtn:hover { color: var(--ink); }
+
+  /* ---------- секції інфо ---------- */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 30px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); background: var(--bg2); padding: 18px 20px; }
+  .card h3 { margin: 0 0 12px; font-size: 12px; letter-spacing: .26em; color: var(--amber); }
+  .card p, .card li { font-size: 12px; line-height: 1.8; color: var(--ink); opacity: .9; }
+  .card ul { margin: 0; padding-left: 18px; }
+  .card .k { color: #e8d9b8; background: rgba(255,217,138,.08); border: 1px solid rgba(255,217,138,.22); padding: 0 6px; }
+  .acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+  @media (max-width: 720px) { .acts { grid-template-columns: 1fr; } }
+  .act { border: 1px solid var(--line); background: var(--bg2); padding: 16px 18px; }
+  .act .n { font-size: 10px; letter-spacing: .3em; color: var(--dim); }
+  .act .t { font-size: 15px; letter-spacing: .12em; color: #e6ddc8; margin: 8px 0 8px; }
+  .act .t b { color: var(--red); }
+  .act p { margin: 0; font-size: 11.5px; line-height: 1.75; color: var(--ink); opacity: .85; }
+
+  /* ---------- студія ---------- */
+  .studio { margin-top: 44px; border: 1px solid #2a1f33; background: linear-gradient(180deg, #0d0a14, #080610); padding: 26px 24px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .st-logo { font-size: clamp(16px, 3.4vw, 22px); letter-spacing: .22em; color: var(--pink); text-shadow: 0 0 18px rgba(255,79,163,.45); white-space: nowrap; }
+  .st-logo small { display: block; font-size: 9px; letter-spacing: .4em; color: #5e584c; margin-top: 6px; text-shadow: none; }
+  .st-info { flex: 1 1 300px; font-size: 11px; line-height: 2; color: var(--ink); opacity: .85; letter-spacing: .08em; }
+  .st-info b { color: #e8d9b8; }
+  .st-badges { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .badge { font-size: 10px; letter-spacing: .18em; border: 1px solid var(--line); padding: 5px 10px; color: var(--dim); }
+  .badge.mature { color: #ffd98a; border-color: rgba(255,217,138,.4); font-weight: bold; }
+  .credits { margin-top: 18px; font-size: 10px; letter-spacing: .06em; color: #5e584c; line-height: 1.9; }
 </style>
 </head>
 <body>
-<div class="scan"></div>
-<div class="vig"></div>
 
-<div id="stage"><iframe id="gframe" src="about:blank" allowfullscreen allow="autoplay"></iframe></div>
-<button id="quit">✖ ВИЙТИ З ГРИ</button>
-<div class="topbar"><div class="topbtn" id="playtop">▶ ГРАТИ</div></div>
+<div class="topbar">
+  <div class="t"><b>VV13.ROOM15</b> · v1.1</div>
+  <div class="topbtn" id="quit">✖ ВИЙТИ З ГРИ</div>
+</div>
 
-<header>
-  <h1>VV13.<b>ROOM15</b></h1>
-  <div class="slogan">15 APARTMENTS. 15 WORLDS. ONE EVIL.</div>
-  <div class="part">ПОВНА ГРА — АКТ I «ПРОБУДЖЕННЯ» · АКТ II «СХОДОВА КЛІТКА» · АКТ III «ROOM-15»</div>
-</header>
+<div class="wrap">
 
-<main>
-  <div class="story">
-    <p>Харків, стара п'ятиповерхова хрущовка. Сімнадцять років тому в її підвалі військова лабораторія
-    <b>«ВВ-13»</b> проводила експеримент ROOM-15: п'ятнадцять житлових секцій — п'ятнадцять стабільних
-    входів у суміжний вимір. Коли обладнання вимкнули, зупинити було вже пізно: квартири стали світами,
-    а з виміру почало просочуватися те, що документи називають <b>НУЛЬ</b> — воно копіює людей, голоси,
-    спогади і кімнати.</p>
-    <p>Ти — <b>Лєгенда</b>. Суб'єкт 08. Ти прокидаєшся у своїй квартирі №8 на третьому поверсі.
-    Годинник 16:20, надворі гроза, світло ледь тліє — але час тут більше не працює як раніше.
-    Збери докази, прослухай касету «ЗРАЗОК 08-В», перевір дзеркало — і знайди ключ-картку,
-    щоб вийти з квартири. Акт I завершується там, де починається під'їзд.</p>
-    <p>Гра йде від першої особи. Темрява — твій ворог і твій інструмент: вимикачі кімнат працюють,
-    а ліхтарик має три режими — теплий, червоний і мигання. Обережно: коли світло вимкнено,
-    у квартирі щось переміщується.</p>
-    <p><b>Це повна гра, три акти.</b> Акт I — квартира і докази. Акт II — під'їзд: п'ятнадцять поштових
-    ящиків зі свіжими іменами, дзеркало квартири 9, яке пізнає тебе, касети Толіка з 12-ї і лом біля
-    сміттєпроводу. Акт III — підвал-лабораторія ROOM-15: п'ятнадцять капсул, суб'єкт 07, який говорить
-    чужими голосами, колби РР-7 — і пульт із трьома важелями: <b>СТРАЖ, СТЕРТИ або СТАТИ НУЛЄМ.</b>
-    А в сходовій клітині на тебе полює НУЛЬ: він не рухається, поки на нього дивляться, навчається
-    твоїх звичок і приходить частіше, якщо шуміти. Булава — в руках. Смерть тут — не кінець: день 41
-    просто повторюється з автосейву.</p>
+  <header class="hero">
+    <div class="tags">
+      <span class="tag hot">PS1-STYLE HORROR</span>
+      <span class="tag">3D · ВІД ПЕРШОЇ ОСОБИ</span>
+      <span class="tag">УКРАЇНСЬКОЮ</span>
+      <span class="tag">ТРІПИ · ВИЖИВАННЯ · НУЛЬ НАВЧАЄТЬСЯ</span>
+    </div>
+    <h1 class="logo">VV13.<b>ROOM15</b></h1>
+    <div class="slogan">15 КВАРТИР. 15 СВІТІВ. ОДНЕ ЗЛО.</div>
+    <div class="art">
+      Харків. Стара п'ятиповерхова хрущовка на околиці. Сімнадцять років тому в її підвалі
+      військова лабораторія «ВВ-13» провела експеримент <i>ROOM-15</i>: п'ятнадцять житлових секцій
+      утримували п'ятнадцять стабільних входів у суміжний вимір. Коли обладнання вимкнули —
+      було вже пізно. Квартири стали світами, а з виміру почало просочуватися те,
+      що документи називають <i>НУЛЬ</i>: воно копіює людей, голоси, спогади і кімнати.
+      <span class="d">Він не рухається, поки на нього дивляться. Він вчиться на твоїх помилках.
+      Він пам'ятає твої смерті.</span><br><br>
+      Ти — <i>Лєгенда</i>. Суб'єкт 08. Ти прокидаєшся у квартирі №8 о 16:20 — і годинник більше
+      не працює як раніше. Збери докази. Слухай касети. Не дивись довго у дзеркало 9-ї.
+      І запам'ятай: часом реальність сходить з розуму — <i>тріпи</i> пересовують меблі,
+      пророщують траву крізь шпалери і випускають тебе надвір. Це не сон. Мабудь.
+    </div>
+  </header>
+
+  <div class="console">
+    <div class="console-head">
+      <div class="model">ІГРОВА ПРИСТАВКА <b>VV-13</b> · СЕРІЯ «ХРУЩОВКА»</div>
+      <div class="leds"><span><span class="led" id="ledPow"></span>POWER</span><span><span class="led" id="ledRun"></span>RUN</span></div>
+    </div>
+    <div class="screen off" id="screen">
+      <div class="poster" id="poster">
+        <div class="p1">VV13.<b>ROOM15</b></div>
+        <div class="p2">ЧАСТИНА 4 «ПРОБУДЖЕННЯ» · ЧАСТИНА 5 «СХОДОВА КЛІТКА» · АКТ III «ROOM-15»</div>
+        <div class="menu"><b>▶ ПОЧАТИ ГРУ</b><br>КЕРУВАННЯ: WASD · МИША · [R] ВЗЯТИ · [B] РЮКЗАК · [J] ЩОДЕННИК<br>НА ТЕЛЕФОНІ: ДЖОЙСТИК ЗЛІВА · СВАЙП СПРАВА · КНОПКИ ВГОРІ СПРАВА</div>
+      </div>
+      <div class="vign"></div>
+    </div>
+    <div class="console-foot">
+      <div class="playbtn" id="play">▶ ГРАТИ</div>
+      <div class="quitbtn" id="quit2">✖ ВИКЛЮЧИТИ</div>
+      <div class="crt">
+        CRT <input type="range" id="crtR" min="0" max="100" value="50">
+        <span class="fsbtn" id="fs">⛶ НА ВЕСЬ ЕКРАН</span>
+      </div>
+    </div>
   </div>
 
-  <h2>ЩО ВСЕРЕДИНІ</h2>
-  <div class="grid">
-    <div class="card"><b>АКТ I · КВАРТИРА №8</b>Зал, К1, К2, кухня, ванна, туалет, коридор, прихожа, кладовка,
-      балкон — реалістичні меблі Poly Haven у стилі PS1-хорору. 6 завдань · 8 доказів · щоденник [J].</div>
-    <div class="card"><b>АКТ II · ПІД'ЇЗД</b>Сходова клітка, що веде «в самі себе»: 15 поштових ящиків,
-      квартири 9 і 12 (дзеркало-подвійник і касети Толіка), забите вікно 15-ї, люда в підвал.
-      Нове завдання — лом біля сміттєпроводу.</div>
-    <div class="card"><b>АКТ III · ROOM-15</b>Підвал-лабораторія 1987 року: коридор з 15 капсулами,
-      розмова з суб'єктом 07 (голос переливається: сусід → Толік → ти), колби РР-7 і пульт з ТРИМА ФІНАЛАМИ.</div>
-    <div class="card"><b>НУЛЬ ПОЛЮЄ</b>Він з'являється в під'їзді і підвалі. Віз-ангел: не рухається,
-      поки на нього дивишся. Червоний далекий промінь ліхтарика відганяє, булава (2 удари) згинув —
-      але кожен удар і кожен шум робить його злішим. Він пам'ятає навіть твої смерті.</div>
-    <div class="card"><b>ВИЖИВАННЯ</b>СИЛИ · ЇЖА · ВОДА · СТРАХ: шукай їжу і воду, спи на кушетці,
-      крафт у рюкзаку. Листочки дають ейфорію — теплий фільтр і спокій. Страх дає глюки.</div>
-    <div class="card"><b>СИСТЕМИ</b>Панель [ESC]: чутливість, гучність, якість графіки, FPS.
-      Автосейв + 3 слоти + експорт/імпорт. 18 досягнень. Геймпад. Фото-режим [P].
-      Аміент-музика і шар погоні, коли НУЛЬ близько.</div>
+  <div class="acts">
+    <div class="act"><div class="n">АКТ I</div><div class="t">«ПРОБУДЖЕННЯ»</div>
+      <p>Квартира №8. Документ ВВ-13/03, вісім доказів, дзеркало К2, касета «ЗРАЗОК 08-В»,
+      щиток кладовки — і вихідні двері, які відчиняються лише з ключ-карткою.</p></div>
+    <div class="act"><div class="n">АКТ II</div><div class="t">«СХОДОВА <b>КЛІТКА</b>»</div>
+      <p>Під'їзд. 15 поштових ящиків зі свіжими іменами. Дзеркало 9-ї, яке пізнає тебе.
+      Лом, три касети Толіка з 12-ї — і люда у підвал.</p></div>
+    <div class="act"><div class="n">АКТ III</div><div class="t">«ROOM-15»</div>
+      <p>Підвал-лабораторія. 15 капсул, суб'єкт 07, три колби РР-7 і пульт з трьома важелями:
+      СТРАЖ · СТЕРТИ · СТАТИ НУЛЄМ. Один день 41. Три фінали.</p></div>
   </div>
 
-  <h2>КЕРУВАННЯ</h2>
-  <table>
-    <tr><td class="k">WASD + МИША</td><td>рух і огляд · SHIFT — біг · клік — захват миші</td></tr>
-    <tr><td class="k">R</td><td>взаємодія: документи, дзеркало, телевізор, щиток, двері, огляд предметів, меблі, сон</td></tr>
-    <tr><td class="k">E</td><td>двері і вимикачі світла · F — показати/сховати меблі</td></tr>
-    <tr><td class="k">L</td><td>ліхтарик: теплий бл/дал → червоний бл/дал → мигання → вимк</td></tr>
-    <tr><td class="k">B</td><td>РЮКЗАК: інвентар, крафт (бинт, каплі, заряд), нотатки-підказки</td></tr>
-    <tr><td class="k">J</td><td>щоденник Лєгенди: завдання і докази</td></tr>
-    <tr><td class="k">C</td><td>встати з меблів · присісти</td></tr>
-    <tr><td class="k">ВИЖИВАННЯ</td><td>СИЛИ · ЇЖА · ВОДА · СТРАХ: шукай їжу і воду, спи на кушетці, сиди відпочивати — інакше повільнієш, а страх дає глюки</td></tr>
-    <tr><td class="k">ЛКМ / SPACE</td><td>УДАР булавою (у під'їзді і підвалі) · 2 удари відганяють НУЛЯ, кожен -18 стаміни</td></tr>
-    <tr><td class="k">ESC</td><td>панель СИСТЕМИ: налаштування, сейви (авто + 3 слоти), експорт/імпорт, досягнення</td></tr>
-    <tr><td class="k">P</td><td>фото-режим: приховує інтерфейс · [F8] — підказка</td></tr>
-    <tr><td class="k">ГЕЙМПАД</td><td>лістик — рух, правий — огляд · A — взаємодія · X — рюкзак · Y — щоденник · LB — ліхтарик · RT — удар · Start — система</td></tr>
-    <tr><td class="k">ТЕЛЕФОН</td><td>джойстик зліва, свайп справа — огляд, кнопки в куті (взяти · рюкзак · щоденник · УДАР · СИСТЕМА)</td></tr>
-  </table>
-
-  <div class="playwrap">
-    <div class="playbtn" id="play">▶ ГРАТИ</div>
-    <div class="note">гра завантажує моделі окремими файлами — запускай через GitHub Pages<br>
-      або локальний сервер (python -m http.server) · ~1 МБ сторінка + ~103 МБ моделей · звук увімкнись [M]</div>
+  <div class="grid2">
+    <div class="card"><h3>ОСОБЛИВОСТІ v1.1</h3>
+      <ul>
+        <li><b>ТРІПИ</b> — 6 видів видінь: ТІНІ · ЛЕВІТАЦІЯ · ПРОРОСТАННЯ · ЗСУВ · ВУЛИЦЯ · ЕХО. Меблі переїжджають назавжди, підказки зникають і з'являються на нових місцях, трава проростає на стінах, двері може завалити — до наступного тріпу.</li>
+        <li><b>НУЛЬ НАВЧАЄТЬСЯ</b> — агресія росте від дзеркал, шуму і бігу. Віз-ангел: не рухається, поки на нього дивляться. Червоний далекий промінь відганяє. Булава — 2 удари.</li>
+        <li><b>ВИЖИВАННЯ</b> — СИЛИ · ЇЖА · ВОДА · СТРАХ. Крафт у рюкзаку, сон, сидіння, огляд предметів 3D.</li>
+        <li><b>НОЧ</b> — вимикачів більше немає: світло вмикається саме — тускле, різнокольорове, з глітчами. Вдень видно, вночі — ліхтарик.</li>
+        <li>Один день 41 · автопогода (дощ → гроза → туман → сніг) · 18 досягнень · сейви + експорт · геймпад · фото-режим [P].</li>
+      </ul>
+    </div>
+    <div class="card"><h3>КЕРУВАННЯ</h3>
+      <p><span class="k">WASD</span> рух · <span class="k">МИША</span> огляд · <span class="k">SHIFT</span> біг ·
+      <span class="k">R</span> взаємодія · <span class="k">E</span> двері · <span class="k">L</span> ліхтарик (тепл/черв × бл/дал) ·
+      <span class="k">B</span> рюкзак + крафт · <span class="k">J</span> щоденник · <span class="k">C</span> встати ·
+      <span class="k">ESC</span> система · <span class="k">P</span> фото-режим · <span class="k">M</span> звук.<br><br>
+      <b>Телефон:</b> джойстик зліва, свайп справа — огляд, кнопки піднято вгору. Геймпад підтримується.
+      Час іде сам від 16:20. Погода змінюється сама. Звук увімкни — [M].</p>
+    </div>
   </div>
-</main>
 
-<footer>
-  © VV13.ROOM15 · ПОВНА ГРА · АКТ I «ПРОБУДЖЕННЯ» · АКТ II «СХОДОВА КЛІТКА» · АКТ III «ROOM-15»<br>
-  ТРИ ФІНАЛИ. ОДИН ДЕНЬ 41. ВІН НАВЧАЄТЬСЯ.
-</footer>
+  <div class="studio">
+    <div class="st-logo">IBONARIUM GAMEWORKS<small>OFFICIAL RELEASE</small></div>
+    <div class="st-info">
+      <b>VV13.ROOM15</b> — повна гра · Частина 4 + 5 + Акти II-III<br>
+      Автор: <b>Viktor Legend Khomenko</b><br>
+      v1.1 · 21.11.2026 · 1 PLAYER · МОДЕЛІ: Poly Haven (CC0) · ЗВУКИ: Freesound (klankbeeld CC-BY та ін.)
+    </div>
+    <div class="st-badges">
+      <span class="badge mature">MATURE 17+</span>
+      <span class="badge">HORROR · SURVIVAL</span>
+      <span class="badge">THREE ENDINGS · ONE DAY 41 · HE LEARNS</span>
+    </div>
+  </div>
+
+  <div class="credits">
+    Гра працює з GitHub Pages або локального сервера (python3 -m http.server). Через file:// моделі не завантажаться.
+    ~1 МБ сторінка + моделі. Звук — увімкни [M]. У грі є скрімери і глітчі — не для слабких нервів.
+  </div>
+
+</div>
+
+<div id="stage"><iframe id="gframe" src="about:blank" allowfullscreen allow="autoplay; pointer-lock; fullscreen"></iframe></div>
 
 <script>
   const stage = document.getElementById('stage');
   const frame = document.getElementById('gframe');
-  const quit  = document.getElementById('quit');
-  document.getElementById('play').addEventListener('click', () => {
+  const screenEl = document.getElementById('screen');
+  const quit = document.getElementById('quit');
+  const quit2 = document.getElementById('quit2');
+  const play = document.getElementById('play');
+  const ledPow = document.getElementById('ledPow');
+  const ledRun = document.getElementById('ledRun');
+  function start() {
     frame.src = 'game.html';
     stage.classList.add('on');
-    quit.classList.add('on');
+    screenEl.classList.remove('off');
+    quit2.classList.add('on');
+    ledPow.classList.add('on');
+    setTimeout(() => ledRun.classList.add('on'), 900);
     document.body.style.overflow = 'hidden';
-    try { if (frame.requestFullscreen) frame.requestFullscreen(); } catch(e) {}
-  });
-  document.getElementById('playtop').addEventListener('click', () => document.getElementById('play').click());
-  quit.addEventListener('click', () => {
+    try { if (stage.requestFullscreen) stage.requestFullscreen(); } catch (e) {}
+    try { frame.focus(); } catch (e) {}
+  }
+  function stop() {
     frame.src = 'about:blank';
     stage.classList.remove('on');
-    quit.classList.remove('on');
+    screenEl.classList.add('off');
+    quit2.classList.remove('on');
+    ledPow.classList.remove('on');
+    ledRun.classList.remove('on');
     document.body.style.overflow = '';
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  }
+  play.addEventListener('click', start);
+  quit2.addEventListener('click', stop);
+  quit.addEventListener('click', stop);
+  const crtR = document.getElementById('crtR');
+  crtR.addEventListener('input', () => { screenEl.style.setProperty('--crt', crtR.value / 100); });
+  document.getElementById('fs').addEventListener('click', () => {
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else if (stage.requestFullscreen) stage.requestFullscreen();
   });
+  // клік по вимкненому екрані теж запускає
+  screenEl.addEventListener('click', () => { if (!stage.classList.contains('on')) start(); });
 </script>
 </body>
 </html>
